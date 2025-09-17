@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Button, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -22,7 +23,13 @@ const Index = () => {
       {/* Button */}
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
-          <Button title="Start" color="#F4F8FC" onPress={() => {}} />
+          <Button
+            title="Start"
+            color="#F4F8FC"
+            onPress={() => {
+              router.push("/home");
+            }}
+          />
         </View>
       </View>
     </SafeAreaView>
