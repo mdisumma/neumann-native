@@ -35,6 +35,9 @@ export default function Home() {
   const handleGoBack = () => {
     router.back(); // Navigate back to the previous screen
   };
+  const handleGoImage = () => {
+    router.push("/image"); // Navigate to the image  screen
+  };
 
   return (
     <View style={styles.container}>
@@ -42,6 +45,7 @@ export default function Home() {
       <Text style={styles.subtitle}>Welcome to your app!</Text>
       <Button title="Fetch JWT" onPress={handleApi} color="#142C44" />
       <Button title="Go Back" onPress={handleGoBack} color="#142C44" />
+      <Button title="Go to Image" onPress={handleGoImage} color="#142C44" />
     </View>
   );
 }
