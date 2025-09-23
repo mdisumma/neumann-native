@@ -8,8 +8,16 @@ import {
   Text,
   View,
 } from "react-native";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
 
-export default function Camera() {
+type CameraScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Camera'>;
+
+interface Props {
+  navigation: CameraScreenNavigationProp;
+}
+
+export default function CameraScreen({ navigation }: Props) {
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null); // stores the URI and base64
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<{

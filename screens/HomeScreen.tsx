@@ -1,9 +1,16 @@
 import { API_AUTHORIZATION, API_PASSWORD, API_URL, API_USER } from "@env";
-import { router } from "expo-router";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
 
-const Index = () => {
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+
+interface Props {
+  navigation: HomeScreenNavigationProp;
+}
+
+const HomeScreen = ({ navigation }: Props) => {
   const handleApi = async () => {
     try {
       const response = await fetch(API_URL, {
@@ -58,7 +65,7 @@ const Index = () => {
             color="#F4F8FC"
             onPress={() => {
               handleApi();
-              router.push("/camera");
+              navigation.navigate('Camera');
             }}
           />
         </View>
@@ -87,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Index;
+export default HomeScreen;
