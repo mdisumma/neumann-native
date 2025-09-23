@@ -9,10 +9,13 @@ import {
   View,
 } from "react-native";
 
-export default function App() {
-  const [image, setImage] = useState(null); // stores the URI and base64
+export default function Camera() {
+  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null); // stores the URI and base64
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState<{
+    device?: string;
+    error?: string;
+  } | null>(null);
 
   // Open camera to take a photo and send it automatically
   const takePhoto = async () => {
@@ -39,7 +42,7 @@ export default function App() {
 
   // Send the image to the API
   // Send the image to the API
-  const sendImage = async (img) => {
+  const sendImage = async (img: ImagePicker.ImagePickerAsset | null) => {
     const imageToSend = img || image;
     if (!imageToSend || !imageToSend.base64) {
       alert("No image selected!");
@@ -74,7 +77,12 @@ export default function App() {
       setResponse(json);
     } catch (err) {
       console.error(err);
-      setResponse({ error: err.message });
+      setResponse({
+        error:
+          typeof err === "object" && err !== null && "message" in err
+            ? String((err as { message?: unknown }).message)
+            : String(err),
+      });
     } finally {
       setLoading(false);
     }
