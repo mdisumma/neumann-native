@@ -1,8 +1,38 @@
+import { API_AUTHORIZATION, API_PASSWORD, API_URL, API_USER } from "@env";
 import { router } from "expo-router";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Index = () => {
+  const handleApi = async () => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "X-USER-NAME": API_USER,
+          "X-USER-PASSWORD": API_PASSWORD,
+          Authorization: API_AUTHORIZATION,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Fetched JWT:", data.jwt);
+
+      // Optional: alert the JWT
+      Alert.alert("JWT Fetched", data.jwt);
+    } catch (error) {
+      console.error("Fetch error:", error);
+      Alert.alert("Error", "Failed to fetch JWT");
+    } finally {
+      console.log("Fetch attempt finished.");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.screen} edges={["left", "right"]}>
       {/* Header */}
@@ -27,7 +57,8 @@ const Index = () => {
             title="Start"
             color="#F4F8FC"
             onPress={() => {
-              router.push("/home");
+              handleApi();
+              router.push("/camera");
             }}
           />
         </View>

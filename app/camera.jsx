@@ -14,7 +14,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
 
-  // Open camera to take a photo
+  // Open camera to take a photo and send it automatically
   const takePhoto = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
     if (!granted) {
@@ -30,13 +30,18 @@ export default function App() {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0]); // contains { uri, base64 }
+      const img = result.assets[0];
+      setImage(img); // update state for UI
+      // Automatically send image to API
+      sendImage(img);
     }
   };
 
   // Send the image to the API
-  const sendImage = async () => {
-    if (!image || !image.base64) {
+  // Send the image to the API
+  const sendImage = async (img) => {
+    const imageToSend = img || image;
+    if (!imageToSend || !imageToSend.base64) {
       alert("No image selected!");
       return;
     }
@@ -47,7 +52,7 @@ export default function App() {
 
       const body = {
         mime_type: "image/jpeg",
-        image_data_base64: image.base64,
+        image_data_base64: imageToSend.base64,
       };
 
       const res = await fetch(
@@ -77,43 +82,16 @@ export default function App() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.label}>Take a photo and send it to the API</Text>
+      {!image && <Button title="Take Photo" onPress={takePhoto} />}
 
-      <Button title="Take Photo" onPress={takePhoto} />
+      {image && <Image source={{ uri: image.uri }} style={styles.image} />}
 
-      {image && (
-        <>
-          <Image source={{ uri: image.uri }} style={styles.image} />
-          <Button
-            title={loading ? "Sending..." : "Send Image to API"}
-            onPress={sendImage}
-          />
-        </>
-      )}
+      {loading && <Text style={styles.label}>Sending image...</Text>}
 
       {response && (
         <View style={styles.responseBox}>
           <Text style={styles.sectionTitle}>Device Info</Text>
           <Text style={styles.response}>Device: {response.device}</Text>
-          <Text style={styles.response}>
-            Type: {response.appliance_classification?.type}
-          </Text>
-          <Text style={styles.response}>
-            Protection: {response.appliance_classification?.protection_class}
-          </Text>
-          <Text style={styles.response}>
-            Reason: {response.appliance_classification?.reason}
-          </Text>
-
-          <Text style={styles.sectionTitle}>Tests</Text>
-          {response.tests?.map((test, index) => (
-            <View key={index} style={styles.testItem}>
-              <Text style={styles.testName}>
-                {index + 1}. {test.test_name}
-              </Text>
-              <Text style={styles.testDesc}>{test.test_description}</Text>
-            </View>
-          ))}
         </View>
       )}
     </ScrollView>
