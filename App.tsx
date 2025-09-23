@@ -3,15 +3,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { RootStackParamList } from "./types/navigation";
 
 // Import screens
 import CameraScreen from "./screens/CameraScreen";
 import HomeScreen from "./screens/HomeScreen";
-
-export type RootStackParamList = {
-  Home: undefined;
-  Camera: undefined;
-};
 
 const Stack = createStackNavigator<RootStackParamList>();
 

@@ -9,7 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../types/navigation";
 
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

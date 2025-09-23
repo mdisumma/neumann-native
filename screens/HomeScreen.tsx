@@ -2,7 +2,7 @@ import { API_AUTHORIZATION, API_PASSWORD, API_URL, API_USER } from "@env";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../types/navigation";
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
 
