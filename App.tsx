@@ -1,12 +1,12 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Import screens
-import HomeScreen from './screens/HomeScreen';
-import CameraScreen from './screens/CameraScreen';
+import CameraScreen from "./screens/CameraScreen";
+import HomeScreen from "./screens/HomeScreen";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -24,27 +24,27 @@ export default function App() {
           initialRouteName="Home"
           screenOptions={{
             headerStyle: {
-              backgroundColor: '#6B7C93',
+              backgroundColor: "#6B7C93",
             },
-            headerTintColor: '#F4F8FC',
+            headerTintColor: "#F4F8FC",
             headerTitleStyle: {
-              fontWeight: 'bold',
+              fontWeight: "bold",
             },
           }}
         >
-          <Stack.Screen 
-            name="Home" 
+          <Stack.Screen
+            name="Home"
             component={HomeScreen}
             options={{
-              title: 'Power Tool Inspector',
+              title: "Power Tool Inspector",
               headerShown: false, // Hide header for home screen to keep original design
             }}
           />
-          <Stack.Screen 
-            name="Camera" 
+          <Stack.Screen
+            name="Camera"
             component={CameraScreen}
             options={{
-              title: 'Take Photo',
+              title: "Take Photo",
             }}
           />
         </Stack.Navigator>

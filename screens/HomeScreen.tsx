@@ -1,10 +1,10 @@
 import { API_AUTHORIZATION, API_PASSWORD, API_URL, API_USER } from "@env";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from "../App";
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
 
 interface Props {
   navigation: HomeScreenNavigationProp;
@@ -65,7 +65,7 @@ const HomeScreen = ({ navigation }: Props) => {
             color="#F4F8FC"
             onPress={() => {
               handleApi();
-              navigation.navigate('Camera');
+              navigation.navigate("Camera");
             }}
           />
         </View>

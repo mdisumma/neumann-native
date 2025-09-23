@@ -1,3 +1,4 @@
+import { StackNavigationProp } from "@react-navigation/stack";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import {
@@ -8,10 +9,12 @@ import {
   Text,
   View,
 } from "react-native";
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from "../App";
 
-type CameraScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Camera'>;
+type CameraScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Camera"
+>;
 
 interface Props {
   navigation: CameraScreenNavigationProp;
