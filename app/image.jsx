@@ -1,6 +1,13 @@
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { Button, Image, ScrollView, StyleSheet, Text } from "react-native";
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function App() {
   const [image, setImage] = useState(null); // stores the URI and base64
@@ -56,15 +63,13 @@ export default function App() {
       );
 
       const json = await res.json();
+      console.log("json:", JSON.stringify(json, null, 2));
 
-      // ✅ Log the response to the console
-      console.log("API response:", json);
-
-      setResponse(JSON.stringify(json, null, 2));
-      console.log(json);
+      // ✅ keep raw JSON object in state
+      setResponse(json);
     } catch (err) {
       console.error(err);
-      setResponse("Error: " + err.message);
+      setResponse({ error: err.message });
     } finally {
       setLoading(false);
     }
@@ -86,7 +91,31 @@ export default function App() {
         </>
       )}
 
-      {response && <Text style={styles.response}>{response}</Text>}
+      {response && (
+        <View style={styles.responseBox}>
+          <Text style={styles.sectionTitle}>Device Info</Text>
+          <Text style={styles.response}>Device: {response.device}</Text>
+          <Text style={styles.response}>
+            Type: {response.appliance_classification?.type}
+          </Text>
+          <Text style={styles.response}>
+            Protection: {response.appliance_classification?.protection_class}
+          </Text>
+          <Text style={styles.response}>
+            Reason: {response.appliance_classification?.reason}
+          </Text>
+
+          <Text style={styles.sectionTitle}>Tests</Text>
+          {response.tests?.map((test, index) => (
+            <View key={index} style={styles.testItem}>
+              <Text style={styles.testName}>
+                {index + 1}. {test.test_name}
+              </Text>
+              <Text style={styles.testDesc}>{test.test_description}</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -101,5 +130,31 @@ const styles = StyleSheet.create({
   },
   label: { fontSize: 18, marginBottom: 20, textAlign: "center" },
   image: { width: 300, height: 300, borderRadius: 12, marginVertical: 20 },
-  response: { marginTop: 20, fontSize: 14, color: "black" },
+  responseBox: {
+    marginTop: 20,
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: "#f4f4f4",
+    width: "100%",
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 5,
+    color: "#333",
+  },
+  response: {
+    fontSize: 14,
+    color: "black",
+    marginBottom: 5,
+  },
+  testItem: {
+    marginBottom: 10,
+    paddingLeft: 10,
+    borderLeftWidth: 2,
+    borderLeftColor: "#007AFF",
+  },
+  testName: { fontWeight: "600", fontSize: 14, color: "#222" },
+  testDesc: { fontSize: 13, color: "#555" },
 });
