@@ -13,11 +13,12 @@ interface Props {
 }
 
 export default function InspectionScreen({ navigation }: Props) {
+  console.log("inspectionJSON:", JSON.stringify(inspectionJSON, null, 2));
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
-          {inspectionJSON.inspection.inspection_class}
+          Inspection Class: {inspectionJSON.inspection.inspection_class}
         </Text>
         <Image
           source={require("../assets/images/test.jpg")} // your local image
@@ -32,7 +33,12 @@ export default function InspectionScreen({ navigation }: Props) {
         <Text style={styles.response}>
           Reminder: {inspectionJSON.inspection.reminder}
         </Text>
-        <Text style={styles.sectionTitle}>Device Info</Text>
+      </View>
+      {/* visual device info section */}
+      <View style={styles.responseBox}>
+        <Text style={styles.sectionTitle}>
+          {inspectionJSON.device_info.section}
+        </Text>
         <Text style={styles.response}>
           Device: {inspectionJSON.device_info.device}
         </Text>
@@ -44,6 +50,24 @@ export default function InspectionScreen({ navigation }: Props) {
         </Text>
         <Text style={styles.response}>
           Serial Number: {inspectionJSON.device_info.serial_number}
+        </Text>
+      </View>
+      {/* visual inspection section */}
+      <View style={styles.responseBox}>
+        <Text style={styles.sectionTitle}>
+          {inspectionJSON.visual_inspection.section}
+        </Text>
+      </View>
+      {/* Electrical Safety Test section */}
+      <View style={styles.responseBox}>
+        <Text style={styles.sectionTitle}>
+          {inspectionJSON.electrical_safety.section}
+        </Text>
+      </View>
+      {/* Functional test section */}
+      <View style={styles.responseBox}>
+        <Text style={styles.sectionTitle}>
+          {inspectionJSON.functional_test.section}
         </Text>
       </View>
     </ScrollView>
@@ -70,7 +94,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    marginTop: 16,
+    marginTop: 8,
     marginBottom: 8,
     color: "#333",
   },

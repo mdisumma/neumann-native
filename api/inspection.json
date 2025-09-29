@@ -7,14 +7,14 @@
     "reminder": "01/01/2026"
   },
   "device_info": {
-    "section": "device_info",
+    "section": "Device Info",
     "device": "Extension cord",
     "model": "G2801891",
     "voltage": "250V",
     "serial_number": "00223186"
   },
   "visual_inspection": {
-    "section": "visual_inspection",
+    "section": "Visual Inspection",
     "questions": [
       {
         "order": "1",
@@ -31,7 +31,7 @@
     ]
   },
   "electrical_safety": {
-    "section": "electrical_safety",
+    "section": "Electrical Safety Test",
     "measurements": [
       {
         "order": 1,
@@ -45,7 +45,7 @@
     ]
   },
   "functional_test": {
-    "section": "functional_test",
+    "section": "Functional Test",
     "questions": [
       {
         "order": "1",
