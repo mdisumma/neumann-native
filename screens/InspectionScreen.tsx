@@ -1,11 +1,11 @@
 import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
-  Button,
   Image,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import inspectionJSON from "../api/inspection.json";
@@ -65,14 +65,21 @@ export default function InspectionScreen({ navigation }: Props) {
           {inspectionJSON.visual_inspection.section}
         </Text>
         <View>
-          <Text>Question:</Text>
+          <Text>{inspectionJSON.visual_inspection.questions[0].name}</Text>
           <View style={styles.buttonContainer}>
-            <View style={styles.buttonSx}>
-              <Button title="Yes" color="#142C44" onPress={() => {}} />
-            </View>
-            <View style={styles.buttonDx}>
-              <Button title="No" color="#142C44" onPress={() => {}} />
-            </View>
+            <TouchableOpacity
+              style={styles.buttonSx}
+              onPress={() => console.log("Yes pressed")}
+            >
+              <Text style={styles.buttonText}>Yes</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.buttonDx}
+              onPress={() => console.log("No pressed")}
+            >
+              <Text style={styles.buttonText}>No</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -87,6 +94,24 @@ export default function InspectionScreen({ navigation }: Props) {
         <Text style={styles.sectionTitle}>
           {inspectionJSON.functional_test.section}
         </Text>
+        <View>
+          <Text>{inspectionJSON.functional_test.questions[0].name}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.buttonSx}
+              onPress={() => console.log("Yes pressed")}
+            >
+              <Text style={styles.buttonText}>Yes</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.buttonDx}
+              onPress={() => console.log("No pressed")}
+            >
+              <Text style={styles.buttonText}>No</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -126,17 +151,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between", // space between the buttons
     marginTop: 16,
-    width: "100%", // make container full width
+    width: "100%", // full width
   },
   buttonSx: {
-    width: "48%",
+    width: "48%", // roughly half of container width
     backgroundColor: "#F4F8FC",
     borderWidth: 1,
     borderColor: "#142C44",
-    borderTopLeftRadius: 18,
-    borderBottomLeftRadius: 18,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
+    alignItems: "center", // center text horizontally
+    paddingVertical: 12, // vertical padding
   },
   buttonDx: {
     width: "48%",
@@ -145,7 +172,14 @@ const styles = StyleSheet.create({
     borderColor: "#142C44",
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
-    borderTopRightRadius: 18,
-    borderBottomRightRadius: 18,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    alignItems: "center",
+    paddingVertical: 12,
+  },
+  buttonText: {
+    color: "#142C44",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
