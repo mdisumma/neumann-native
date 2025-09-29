@@ -1,5 +1,6 @@
 import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -20,15 +21,19 @@ interface Props {
 }
 
 export default function InspectionScreen({ navigation }: Props) {
-  console.log("inspectionJSON:", JSON.stringify(inspectionJSON, null, 2));
+  // simple state for answers
+  const [visualAnswer, setVisualAnswer] = useState<"yes" | "no" | null>(null);
+  const [funcAnswer, setFuncAnswer] = useState<"yes" | "no" | null>(null);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Inspection info */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           Inspection Class: {inspectionJSON.inspection.inspection_class}
         </Text>
         <Image
-          source={require("../assets/images/test.jpg")} // your local image
+          source={require("../assets/images/test.jpg")}
           style={styles.image}
         />
         <Text style={styles.response}>
@@ -41,7 +46,8 @@ export default function InspectionScreen({ navigation }: Props) {
           Reminder: {inspectionJSON.inspection.reminder}
         </Text>
       </View>
-      {/* device info section */}
+
+      {/* Device info section */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.device_info.section}
@@ -59,56 +65,107 @@ export default function InspectionScreen({ navigation }: Props) {
           Serial Number: {inspectionJSON.device_info.serial_number}
         </Text>
       </View>
-      {/* visual inspection section */}
+
+      {/* Visual inspection section */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.visual_inspection.section}
         </Text>
         <View>
-          <Text>{inspectionJSON.visual_inspection.questions[0].name}</Text>
+          <Text style={styles.questionText}>
+            {inspectionJSON.visual_inspection.questions[0].name}
+          </Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.buttonSx}
-              onPress={() => console.log("Yes pressed")}
+              style={[
+                styles.button,
+                styles.buttonSx,
+                visualAnswer === "yes" && styles.selectedButton,
+              ]}
+              onPress={() => setVisualAnswer("yes")}
             >
-              <Text style={styles.buttonText}>Yes</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  visualAnswer === "yes" && styles.selectedText,
+                ]}
+              >
+                Yes
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.buttonDx}
-              onPress={() => console.log("No pressed")}
+              style={[
+                styles.button,
+                styles.buttonDx,
+                visualAnswer === "no" && styles.selectedButton,
+              ]}
+              onPress={() => setVisualAnswer("no")}
             >
-              <Text style={styles.buttonText}>No</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  visualAnswer === "no" && styles.selectedText,
+                ]}
+              >
+                No
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      {/* Electrical Safety Test section */}
+
+      {/* Electrical Safety Test section (unchanged) */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.electrical_safety.section}
         </Text>
       </View>
+
       {/* Functional test section */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.functional_test.section}
         </Text>
         <View>
-          <Text>{inspectionJSON.functional_test.questions[0].name}</Text>
+          <Text style={styles.questionText}>
+            {inspectionJSON.functional_test.questions[0].name}
+          </Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              style={styles.buttonSx}
-              onPress={() => console.log("Yes pressed")}
+              style={[
+                styles.button,
+                styles.buttonSx,
+                funcAnswer === "yes" && styles.selectedButton,
+              ]}
+              onPress={() => setFuncAnswer("yes")}
             >
-              <Text style={styles.buttonText}>Yes</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  funcAnswer === "yes" && styles.selectedText,
+                ]}
+              >
+                Yes
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.buttonDx}
-              onPress={() => console.log("No pressed")}
+              style={[
+                styles.button,
+                styles.buttonDx,
+                funcAnswer === "no" && styles.selectedButton,
+              ]}
+              onPress={() => setFuncAnswer("no")}
             >
-              <Text style={styles.buttonText}>No</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  funcAnswer === "no" && styles.selectedText,
+                ]}
+              >
+                No
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,61 +182,66 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
   },
-
-  image: { width: "100%", height: 350, borderRadius: 12, marginVertical: 16 },
+  image: {
+    width: "100%",
+    height: 350,
+    borderRadius: 12,
+    marginVertical: 16,
+  },
   responseBox: {
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 8,
     padding: 16,
     borderRadius: 8,
-    backgroundColor: "#F4F8FC",
+    borderWidth: 1,
+    borderColor: "#6B7C93",
     width: "100%",
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    marginTop: 8,
-    marginBottom: 8,
+    marginVertical: 8,
     color: "#142C44",
   },
   response: {
+    fontSize: 14,
+    color: "#142C44",
+    marginBottom: 6,
+  },
+  questionText: {
     fontSize: 14,
     color: "#142C44",
     marginBottom: 8,
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between", // space between the buttons
-    marginTop: 16,
-    width: "100%", // full width
+    justifyContent: "space-between",
+    marginTop: 12,
+    width: "100%",
   },
-  buttonSx: {
-    width: "48%", // roughly half of container width
-    backgroundColor: "#F4F8FC",
-    borderWidth: 1,
-    borderColor: "#142C44",
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    alignItems: "center", // center text horizontally
-    paddingVertical: 12, // vertical padding
-  },
-  buttonDx: {
+  button: {
     width: "48%",
-    backgroundColor: "#F4F8FC",
-    borderWidth: 1,
-    borderColor: "#142C44",
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    backgroundColor: "#E6ECF2", // neutral background
     alignItems: "center",
     paddingVertical: 12,
+    borderRadius: 18,
+  },
+  buttonSx: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  buttonDx: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
   },
   buttonText: {
-    color: "#142C44",
+    color: "#142C44", // neutral text
     fontWeight: "bold",
     fontSize: 16,
+  },
+  selectedButton: {
+    backgroundColor: "#142C44", // dark background when selected
+  },
+  selectedText: {
+    color: "#fff", // white text when selected
   },
 });
