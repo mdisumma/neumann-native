@@ -20,23 +20,20 @@ interface Props {
   navigation: InspectionScreenNavigationProp;
 }
 
-export default function InspectionScreen({ navigation }: Props) {
-  // simple state for answers
-  const [visualAnswer, setVisualAnswer] = useState<"yes" | "no" | null>(null);
-  const [funcAnswer, setFuncAnswer] = useState<"yes" | "no" | null>(null);
+// type for answer
+type Answer = "yes" | "no" | null;
 
-  // toggle handler
-  const toggleAnswer = (
-    current: "yes" | "no" | null,
-    setState: React.Dispatch<React.SetStateAction<"yes" | "no" | null>>,
-    value: "yes" | "no"
-  ) => {
-    if (current === value) {
-      setState(null); // deselect if same button pressed
-    } else {
-      setState(value);
-    }
-  };
+export default function InspectionScreen({ navigation }: Props) {
+  // single state for all answers
+  const [answers, setAnswers] = useState<Record<string, Answer>>({});
+
+  // simple toggle function
+  function toggleAnswer(questionKey: string, clickedValue: "yes" | "no") {
+    setAnswers((prev) => ({
+      ...prev,
+      [questionKey]: prev[questionKey] === clickedValue ? null : clickedValue,
+    }));
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -60,7 +57,7 @@ export default function InspectionScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Device info section */}
+      {/* Device info */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.device_info.section}
@@ -79,109 +76,111 @@ export default function InspectionScreen({ navigation }: Props) {
         </Text>
       </View>
 
-      {/* Visual inspection section */}
+      {/* Visual inspection questions */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.visual_inspection.section}
         </Text>
-        <View>
-          <Text style={styles.questionText}>
-            {inspectionJSON.visual_inspection.questions[0].name}
-          </Text>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                styles.buttonSx,
-                visualAnswer === "yes" && styles.selectedButton,
-              ]}
-              onPress={() => toggleAnswer(visualAnswer, setVisualAnswer, "yes")}
-            >
-              <Text
-                style={[
-                  styles.buttonText,
-                  visualAnswer === "yes" && styles.selectedText,
-                ]}
-              >
-                Yes
-              </Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[
-                styles.button,
-                styles.buttonDx,
-                visualAnswer === "no" && styles.selectedButton,
-              ]}
-              onPress={() => toggleAnswer(visualAnswer, setVisualAnswer, "no")}
-            >
-              <Text
+        {inspectionJSON.visual_inspection.questions.map((question) => (
+          <View key={question.order} style={{ marginBottom: 16 }}>
+            <Text style={styles.questionText}>{question.name}</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
                 style={[
-                  styles.buttonText,
-                  visualAnswer === "no" && styles.selectedText,
+                  styles.button,
+                  styles.buttonSx,
+                  answers[question.order] === "yes" && styles.selectedButton,
                 ]}
+                onPress={() => toggleAnswer(question.order, "yes")}
               >
-                No
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.buttonText,
+                    answers[question.order] === "yes" && styles.selectedText,
+                  ]}
+                >
+                  Yes
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  styles.buttonDx,
+                  answers[question.order] === "no" && styles.selectedButton,
+                ]}
+                onPress={() => toggleAnswer(question.order, "no")}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    answers[question.order] === "no" && styles.selectedText,
+                  ]}
+                >
+                  No
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        ))}
       </View>
 
-      {/* Electrical Safety Test section (unchanged) */}
+      {/* Electrical Safety Test */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.electrical_safety.section}
         </Text>
       </View>
 
-      {/* Functional test section */}
+      {/* Functional test questions */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.functional_test.section}
         </Text>
-        <View>
-          <Text style={styles.questionText}>
-            {inspectionJSON.functional_test.questions[0].name}
-          </Text>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[
-                styles.button,
-                styles.buttonSx,
-                funcAnswer === "yes" && styles.selectedButton,
-              ]}
-              onPress={() => toggleAnswer(funcAnswer, setFuncAnswer, "yes")}
-            >
-              <Text
-                style={[
-                  styles.buttonText,
-                  funcAnswer === "yes" && styles.selectedText,
-                ]}
-              >
-                Yes
-              </Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[
-                styles.button,
-                styles.buttonDx,
-                funcAnswer === "no" && styles.selectedButton,
-              ]}
-              onPress={() => toggleAnswer(funcAnswer, setFuncAnswer, "no")}
-            >
-              <Text
+        {inspectionJSON.functional_test.questions.map((question) => (
+          <View key={question.order} style={{ marginBottom: 16 }}>
+            <Text style={styles.questionText}>{question.name}</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
                 style={[
-                  styles.buttonText,
-                  funcAnswer === "no" && styles.selectedText,
+                  styles.button,
+                  styles.buttonSx,
+                  answers[question.order] === "yes" && styles.selectedButton,
                 ]}
+                onPress={() => toggleAnswer(question.order, "yes")}
               >
-                No
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.buttonText,
+                    answers[question.order] === "yes" && styles.selectedText,
+                  ]}
+                >
+                  Yes
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  styles.buttonDx,
+                  answers[question.order] === "no" && styles.selectedButton,
+                ]}
+                onPress={() => toggleAnswer(question.order, "no")}
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    answers[question.order] === "no" && styles.selectedText,
+                  ]}
+                >
+                  No
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        ))}
       </View>
     </ScrollView>
   );
@@ -233,7 +232,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "48%",
-    backgroundColor: "#E6ECF2", // neutral background
+    backgroundColor: "#E6ECF2",
     alignItems: "center",
     paddingVertical: 12,
     borderRadius: 18,
@@ -247,14 +246,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
   },
   buttonText: {
-    color: "#142C44", // neutral text
+    color: "#142C44",
     fontWeight: "bold",
     fontSize: 16,
   },
   selectedButton: {
-    backgroundColor: "#142C44", // dark background when selected
+    backgroundColor: "#142C44",
   },
   selectedText: {
-    color: "#fff", // white text when selected
+    color: "#fff",
   },
 });
