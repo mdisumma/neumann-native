@@ -25,6 +25,19 @@ export default function InspectionScreen({ navigation }: Props) {
   const [visualAnswer, setVisualAnswer] = useState<"yes" | "no" | null>(null);
   const [funcAnswer, setFuncAnswer] = useState<"yes" | "no" | null>(null);
 
+  // toggle handler
+  const toggleAnswer = (
+    current: "yes" | "no" | null,
+    setState: React.Dispatch<React.SetStateAction<"yes" | "no" | null>>,
+    value: "yes" | "no"
+  ) => {
+    if (current === value) {
+      setState(null); // deselect if same button pressed
+    } else {
+      setState(value);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Inspection info */}
@@ -82,7 +95,7 @@ export default function InspectionScreen({ navigation }: Props) {
                 styles.buttonSx,
                 visualAnswer === "yes" && styles.selectedButton,
               ]}
-              onPress={() => setVisualAnswer("yes")}
+              onPress={() => toggleAnswer(visualAnswer, setVisualAnswer, "yes")}
             >
               <Text
                 style={[
@@ -100,7 +113,7 @@ export default function InspectionScreen({ navigation }: Props) {
                 styles.buttonDx,
                 visualAnswer === "no" && styles.selectedButton,
               ]}
-              onPress={() => setVisualAnswer("no")}
+              onPress={() => toggleAnswer(visualAnswer, setVisualAnswer, "no")}
             >
               <Text
                 style={[
@@ -138,7 +151,7 @@ export default function InspectionScreen({ navigation }: Props) {
                 styles.buttonSx,
                 funcAnswer === "yes" && styles.selectedButton,
               ]}
-              onPress={() => setFuncAnswer("yes")}
+              onPress={() => toggleAnswer(funcAnswer, setFuncAnswer, "yes")}
             >
               <Text
                 style={[
@@ -156,7 +169,7 @@ export default function InspectionScreen({ navigation }: Props) {
                 styles.buttonDx,
                 funcAnswer === "no" && styles.selectedButton,
               ]}
-              onPress={() => setFuncAnswer("no")}
+              onPress={() => toggleAnswer(funcAnswer, setFuncAnswer, "no")}
             >
               <Text
                 style={[
