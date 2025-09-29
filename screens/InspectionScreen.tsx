@@ -1,6 +1,13 @@
 import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import inspectionJSON from "../api/inspection.json";
 
 type InspectionScreenNavigationProp = StackNavigationProp<
@@ -34,7 +41,7 @@ export default function InspectionScreen({ navigation }: Props) {
           Reminder: {inspectionJSON.inspection.reminder}
         </Text>
       </View>
-      {/* visual device info section */}
+      {/* device info section */}
       <View style={styles.responseBox}>
         <Text style={styles.sectionTitle}>
           {inspectionJSON.device_info.section}
@@ -57,6 +64,17 @@ export default function InspectionScreen({ navigation }: Props) {
         <Text style={styles.sectionTitle}>
           {inspectionJSON.visual_inspection.section}
         </Text>
+        <View>
+          <Text>Question:</Text>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonSx}>
+              <Button title="Yes" color="#142C44" onPress={() => {}} />
+            </View>
+            <View style={styles.buttonDx}>
+              <Button title="No" color="#142C44" onPress={() => {}} />
+            </View>
+          </View>
+        </View>
       </View>
       {/* Electrical Safety Test section */}
       <View style={styles.responseBox}>
@@ -83,12 +101,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  image: { width: "100%", height: 350, borderRadius: 12, marginVertical: 20 },
+  image: { width: "100%", height: 350, borderRadius: 12, marginVertical: 16 },
   responseBox: {
-    marginTop: 16,
+    marginTop: 8,
+    marginBottom: 8,
     padding: 16,
-    borderRadius: 10,
-    backgroundColor: "#f4f4f4",
+    borderRadius: 8,
+    backgroundColor: "#F4F8FC",
     width: "100%",
   },
   sectionTitle: {
@@ -96,11 +115,37 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 8,
     marginBottom: 8,
-    color: "#333",
+    color: "#142C44",
   },
   response: {
     fontSize: 14,
-    color: "black",
+    color: "#142C44",
     marginBottom: 8,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between", // space between the buttons
+    marginTop: 16,
+    width: "100%", // make container full width
+  },
+  buttonSx: {
+    width: "48%",
+    backgroundColor: "#F4F8FC",
+    borderWidth: 1,
+    borderColor: "#142C44",
+    borderTopLeftRadius: 18,
+    borderBottomLeftRadius: 18,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  buttonDx: {
+    width: "48%",
+    backgroundColor: "#F4F8FC",
+    borderWidth: 1,
+    borderColor: "#142C44",
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    borderTopRightRadius: 18,
+    borderBottomRightRadius: 18,
   },
 });
