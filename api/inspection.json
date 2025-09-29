@@ -1,0 +1,58 @@
+{
+  "inspection": {
+    "inspection_class": "Class 1",
+    "image": "../assets/images/test.png",
+    "identifier": "0001",
+    "date": "01/01/2025",
+    "reminder": "01/01/2026"
+  },
+  "device_info": {
+    "section": "device_info",
+    "device": "Extension cord",
+    "model": "G2801891",
+    "voltage": "250V",
+    "serial_number": "00223186"
+  },
+  "visual_inspection": {
+    "section": "visual_inspection",
+    "questions": [
+      {
+        "order": "1",
+        "name": "Is the casing free of cracks and damage?",
+        "description": "Please make sure that you inspect the device thoroughly.",
+        "value": null
+      },
+      {
+        "order": "2",
+        "name": "Are all covers and protective devices secure in place?",
+        "description": "Please ensure that all covers and protective devices are properly secured.",
+        "value": null
+      }
+    ]
+  },
+  "electrical_safety": {
+    "section": "electrical_safety",
+    "measurements": [
+      {
+        "order": 1,
+        "name": "Protective Conductor Resistance",
+        "description": "Measure insulation resistance between live parts and accessible conductive parts",
+        "unit": "Ω",
+        "method": "ohmmeter",
+        "limits": { "min": 0.25 },
+        "value": null
+      }
+    ]
+  },
+  "functional_test": {
+    "section": "functional_test",
+    "questions": [
+      {
+        "order": "1",
+        "name": "Does the device power on correctly?",
+        "description": "Please make sure that you plug in the device.",
+        "value": null
+      }
+    ]
+  }
+}

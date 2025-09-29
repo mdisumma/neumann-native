@@ -8,6 +8,7 @@ import { RootStackParamList } from "./types/navigation";
 // Import screens
 import CameraScreen from "./screens/CameraScreen";
 import HomeScreen from "./screens/HomeScreen";
+import InspectionScreen from "./screens/InspectionScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -41,6 +42,13 @@ export default function App() {
             component={CameraScreen}
             options={{
               title: "Take Photo",
+            }}
+          />
+          <Stack.Screen
+            name="Inspection"
+            component={InspectionScreen}
+            options={{
+              title: "Inspection",
             }}
           />
         </Stack.Navigator>

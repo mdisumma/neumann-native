@@ -11,8 +11,6 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../types/navigation";
 
-import cameraApi from "@/api/camera";
-
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Camera"
@@ -29,8 +27,6 @@ export default function CameraScreen({ navigation }: Props) {
     device?: string;
     error?: string;
   } | null>(null);
-
-  console.log("cameraApi:", JSON.stringify(cameraApi, null, 2));
 
   // Open camera to take a photo and send it automatically
   const takePhoto = async () => {
@@ -105,7 +101,13 @@ export default function CameraScreen({ navigation }: Props) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {!image && <Button title="Take Photo" onPress={takePhoto} />}
+      {/* {!image && <Button title="Take Photo" onPress={takePhoto} />} */}
+      {!image && (
+        <Button
+          title="Take Photo"
+          onPress={() => navigation.navigate("Inspection")}
+        />
+      )}
 
       {image && <Image source={{ uri: image.uri }} style={styles.image} />}
 
