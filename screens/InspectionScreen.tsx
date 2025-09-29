@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     width: "48%",
     backgroundColor: "#E6ECF2",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 8,
     borderRadius: 18,
   },
   buttonSx: {
@@ -280,7 +280,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#142C44",
-    fontWeight: "bold",
     fontSize: 16,
   },
   selectedButton: {
