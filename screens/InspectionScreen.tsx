@@ -1,4 +1,5 @@
 import { RootStackParamList } from "@/types/navigation";
+import { MaterialIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
 import {
@@ -149,6 +150,17 @@ export default function InspectionScreen({ navigation }: Props) {
             <Text style={styles.measurementsDescription}>
               {measurement.description}
             </Text>
+            <View style={styles.measured}>
+              <MaterialIcons
+                name="check-circle-outline"
+                size={24}
+                color="#142C44"
+              />
+
+              <Text style={styles.limits}>
+                {measurement.limits.min} {measurement.unit}
+              </Text>
+            </View>
           </View>
         ))}
       </View>
@@ -206,7 +218,7 @@ export default function InspectionScreen({ navigation }: Props) {
       <View style={styles.buttonWrapper}>
         <View style={styles.actionButton}>
           <Button
-            title="Result"
+            title="Inspection Result"
             color="#F4F8FC"
             onPress={() => {
               navigation.navigate("Result");
@@ -302,6 +314,17 @@ const styles = StyleSheet.create({
   },
   measurementsDescription: {
     fontSize: 14,
+    color: "#142C44",
+  },
+  measured: {
+    paddingTop: 16,
+    flexDirection: "row", // put items in a row
+    alignItems: "center", // vertically center icon + text
+    justifyContent: "center", // center the whole row horizontally
+  },
+  limits: {
+    marginLeft: 8, // space between icon and text
+    fontSize: 16,
     color: "#142C44",
   },
   buttonWrapper: {
