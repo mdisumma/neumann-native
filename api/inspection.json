@@ -41,6 +41,15 @@
         "method": "ohmmeter",
         "limits": { "min": 0.25 },
         "value": null
+      },
+      {
+        "order": 2,
+        "name": "Insulation Resistance L-PE",
+        "description": "Measure insulation resistance between live conductors and protective earth conductor",
+        "unit": "Ω",
+        "method": "ohmmeter",
+        "limits": { "min": 0.25 },
+        "value": null
       }
     ]
   },

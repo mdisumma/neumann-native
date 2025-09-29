@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }: Props) => {
         />
       </View>
 
-      {/* Button */}
+      {/* Action Button */}
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
           <Button

@@ -2,6 +2,7 @@ import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
 import {
+  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -131,6 +132,25 @@ export default function InspectionScreen({ navigation }: Props) {
         <Text style={styles.sectionTitle}>
           {inspectionJSON.electrical_safety.section}
         </Text>
+        <View style={styles.buttonWrapper}>
+          <View style={styles.measureButton}>
+            <Button
+              title="Measure"
+              color="#142C44"
+              onPress={() => {
+                console.log("Measure button pressed");
+              }}
+            />
+          </View>
+        </View>
+        {inspectionJSON.electrical_safety.measurements.map((measurement) => (
+          <View key={measurement.order} style={{ marginBottom: 16 }}>
+            <Text style={styles.measurementsName}>{measurement.name}</Text>
+            <Text style={styles.measurementsDescription}>
+              {measurement.description}
+            </Text>
+          </View>
+        ))}
       </View>
 
       {/* Functional test questions */}
@@ -182,6 +202,18 @@ export default function InspectionScreen({ navigation }: Props) {
           </View>
         ))}
       </View>
+      {/* Action Button */}
+      <View style={styles.buttonWrapper}>
+        <View style={styles.actionButton}>
+          <Button
+            title="Result"
+            color="#F4F8FC"
+            onPress={() => {
+              navigation.navigate("Result");
+            }}
+          />
+        </View>
+      </View>
     </ScrollView>
   );
 }
@@ -193,6 +225,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     backgroundColor: "#fff",
+    paddingBottom: 24,
   },
   image: {
     width: "100%",
@@ -255,5 +288,33 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: "#fff",
+  },
+  measureButton: {
+    backgroundColor: "#E6ECF2",
+    width: "100%",
+    borderRadius: 16,
+    overflow: "hidden",
+  },
+  measurementsName: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#142C44",
+    marginBottom: 4,
+  },
+  measurementsDescription: {
+    fontSize: 14,
+    color: "#142C44",
+  },
+  buttonWrapper: {
+    paddingBottom: 24,
+    paddingTop: 16,
+    alignItems: "center",
+    width: "100%",
+  },
+  actionButton: {
+    backgroundColor: "#142C44",
+    width: "100%",
+    borderRadius: 16,
+    overflow: "hidden",
   },
 });

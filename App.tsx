@@ -9,6 +9,7 @@ import { RootStackParamList } from "./types/navigation";
 import CameraScreen from "./screens/CameraScreen";
 import HomeScreen from "./screens/HomeScreen";
 import InspectionScreen from "./screens/InspectionScreen";
+import ResultScreen from "./screens/ResultScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -49,6 +50,13 @@ export default function App() {
             component={InspectionScreen}
             options={{
               title: "Inspection",
+            }}
+          />
+          <Stack.Screen
+            name="Result"
+            component={ResultScreen}
+            options={{
+              title: "Inspection Result",
             }}
           />
         </Stack.Navigator>
