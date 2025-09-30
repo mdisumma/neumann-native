@@ -1,50 +1,270 @@
-# Welcome to your Expo app 👋
+# 🔧 Neumann Native - Equipment Inspection App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo for conducting equipment inspections. This app provides a streamlined interface for performing visual inspections, electrical safety tests, and functional tests on various equipment types.
 
-## Get started
+## � Project Overview
 
-1. Install dependencies
+The Neumann Native app is designed for technicians and inspectors to:
+
+- Conduct systematic equipment inspections
+- Record visual inspection results
+- Perform electrical safety measurements
+- Execute functional tests
+- Capture photos during inspections
+- Generate inspection reports
+
+## 🏗️ Architecture
+
+This project uses a **modular component-based architecture** for maximum maintainability and scalability:
+
+### Navigation
+
+- **React Navigation v7** - Stack navigation instead of Expo Router
+- Custom navigation types for type safety
+- Centralized navigation structure
+
+### State Management
+
+- **React Context API** - Global inspection data management
+- Local component state for UI interactions
+- Immutable state updates for data integrity
+
+### Component Structure
+
+```
+components/
+├── inspection/           # Modular inspection components
+│   ├── DeviceInfo.tsx   # Device information form
+│   ├── ElectricalSafety.tsx # Electrical measurements
+│   ├── FunctionalTest.tsx   # Functional test questions
+│   ├── InspectionHeader.tsx # Inspection metadata
+│   ├── QuestionCard.tsx     # Reusable question component
+│   ├── VisualInspection.tsx # Visual inspection questions
+│   ├── YesNoButton.tsx      # Reusable yes/no button
+│   └── index.ts             # Component exports
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (macOS) or Android Emulator
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd neumann-native
+   ```
+
+2. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. **Start the development server**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+4. **Run on specific platforms**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   # iOS Simulator
+   npm run ios
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+   # Android Emulator
+   npm run android
 
-## Get a fresh project
+   # Web browser
+   npm run web
+   ```
 
-When you're ready, run:
+## 📂 Project Structure
 
-```bash
-npm run reset-project
+```
+neumann-native/
+├── App.tsx                 # Main app component with navigation
+├── screens/               # Screen components
+│   ├── InspectionScreen.tsx  # Main inspection form
+│   └── ...
+├── components/            # Reusable UI components
+│   └── inspection/        # Inspection-specific components
+├── context/              # React Context providers
+│   └── InspectionContext.js # Global inspection state
+├── types/                # TypeScript type definitions
+│   └── navigation.ts     # Navigation types
+├── assets/               # Images and static files
+├── api/                  # API integration (if applicable)
+└── ...config files
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🛠️ Key Technologies
 
-## Learn more
+- **React Native 0.81.4** - Mobile app framework
+- **Expo SDK 54** - Development platform and toolchain
+- **React Navigation 7** - Navigation library
+- **TypeScript** - Type safety and better developer experience
+- **React Context API** - State management
+- **Expo Image Picker** - Camera and image selection
+- **React Native Gesture Handler** - Touch interactions
 
-To learn more about developing your project with Expo, look at the following resources:
+## 📋 Features
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### ✅ Current Features
 
-## Join the community
+- **Equipment Inspection Form** - Comprehensive inspection workflow
+- **Visual Inspection** - Yes/No questions with photo capture
+- **Electrical Safety Tests** - Measurement input fields
+- **Functional Testing** - Equipment functionality verification
+- **Device Information** - Equipment details and specifications
+- **Photo Integration** - Image capture and selection
+- **State Persistence** - Maintains data across navigation
 
-Join our community of developers creating universal apps.
+### 🔄 Development Features
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Hot Reload** - Instant code changes
+- **TypeScript** - Full type safety
+- **ESLint** - Code quality and consistency
+- **Modular Architecture** - Easy to maintain and extend
+- **Component Documentation** - Extensive code comments
+
+## 🧪 Development Workflow
+
+### Code Quality
+
+```bash
+# Run linting
+npm run lint
+
+# Type checking (automatic with TypeScript)
+npx tsc --noEmit
+```
+
+### Project Scripts
+
+```bash
+npm start          # Start Expo development server
+npm run android    # Run on Android emulator
+npm run ios        # Run on iOS simulator
+npm run web        # Run in web browser
+npm run lint       # Run ESLint
+```
+
+### Environment Setup
+
+- Environment variables can be configured in `.env` file
+- Development vs production configurations supported
+
+## 📚 Component Documentation
+
+### InspectionScreen
+
+Main orchestrator component that combines all inspection modules:
+
+- Manages global inspection state
+- Coordinates between different inspection sections
+- Handles navigation to results screen
+
+### Inspection Components
+
+Modular components in `components/inspection/`:
+
+- **InspectionHeader** - Displays inspection metadata
+- **DeviceInfo** - Equipment information form
+- **VisualInspection** - Visual inspection questions
+- **ElectricalSafety** - Electrical measurement inputs
+- **FunctionalTest** - Functional test questions
+- **QuestionCard** - Reusable question component
+- **YesNoButton** - Standardized yes/no input
+
+## 🐛 Debugging
+
+### Development Tools
+
+- **Expo DevTools** - Built-in debugging interface
+- **React Native Debugger** - Advanced debugging
+- **Console Logging** - Enhanced with emoji indicators
+- **TypeScript Errors** - Real-time type checking
+
+### Common Issues
+
+1. **Metro bundler issues** - Clear cache with `npx expo start -c`
+2. **iOS simulator** - Reset simulator if needed
+3. **Android emulator** - Ensure emulator is running before starting
+
+## 🤝 Contributing
+
+### Code Standards
+
+- Use **TypeScript** for all new components
+- Follow **modular architecture** principles
+- Add **comprehensive comments** for junior developers
+- Maintain **component separation** of concerns
+- Use **descriptive naming** conventions
+
+### Pull Request Process
+
+1. Create feature branch from `main`
+2. Implement changes with proper documentation
+3. Test on both iOS and Android
+4. Submit PR with detailed description
+
+## 🚀 Deployment
+
+### Build Commands
+
+```bash
+# Create production build
+npx expo build:android
+npx expo build:ios
+
+# Publish to Expo
+npx expo publish
+```
+
+### Release Process
+
+1. Update version in `package.json`
+2. Test thoroughly on all platforms
+3. Create production builds
+4. Deploy to app stores or internal distribution
+
+## 📖 Resources
+
+### Documentation
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Navigation Docs](https://reactnavigation.org/)
+- [React Native Docs](https://reactnative.dev/)
+
+### Team Resources
+
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [React Context API Guide](https://react.dev/reference/react/useContext)
+- [Component Architecture Best Practices](https://react.dev/learn/thinking-in-react)
+
+---
+
+## 👥 Team Notes
+
+This project has been designed with **junior developer accessibility** in mind:
+
+- Extensive code documentation with clear explanations
+- Modular architecture for easy understanding
+- TypeScript for better IDE support and error catching
+- Consistent patterns across all components
+- Enhanced debugging with descriptive logging
+
+The codebase prioritizes **maintainability** and **readability** over brevity, making it an excellent learning resource while remaining production-ready.
+
+---
+
+_Last updated: September 2025_

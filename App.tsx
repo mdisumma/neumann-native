@@ -11,56 +11,51 @@ import HomeScreen from "./screens/HomeScreen";
 import InspectionScreen from "./screens/InspectionScreen";
 import ResultScreen from "./screens/ResultScreen";
 
+// Import the context provider
+import { InspectionProvider } from "./context/InspectionContext";
+
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <StatusBar style="auto" />
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#6B7C93",
-            },
-            headerTintColor: "#F4F8FC",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        >
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: "Power Tool Inspector",
-              headerShown: false, // Hide header for home screen to keep original design
+    <InspectionProvider>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <StatusBar style="auto" />
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerStyle: { backgroundColor: "#6B7C93" },
+              headerTintColor: "#F4F8FC",
+              headerTitleStyle: { fontWeight: "bold" },
             }}
-          />
-          <Stack.Screen
-            name="Camera"
-            component={CameraScreen}
-            options={{
-              title: "Take Photo",
-            }}
-          />
-          <Stack.Screen
-            name="Inspection"
-            component={InspectionScreen}
-            options={{
-              title: "Inspection",
-            }}
-          />
-          <Stack.Screen
-            name="Result"
-            component={ResultScreen}
-            options={{
-              title: "Inspection Result",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+          >
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                title: "Power Tool Inspector",
+                headerShown: false, // Hide header for home screen
+              }}
+            />
+            <Stack.Screen
+              name="Camera"
+              component={CameraScreen}
+              options={{ title: "Take Photo" }}
+            />
+            <Stack.Screen
+              name="Inspection"
+              component={InspectionScreen}
+              options={{ title: "Inspection" }}
+            />
+            <Stack.Screen
+              name="Result"
+              component={ResultScreen}
+              options={{ title: "Inspection Result" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </InspectionProvider>
   );
 }

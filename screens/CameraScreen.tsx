@@ -52,7 +52,6 @@ export default function CameraScreen({ navigation }: Props) {
   };
 
   // Send the image to the API
-  // Send the image to the API
   const sendImage = async (img: ImagePicker.ImagePickerAsset | null) => {
     const imageToSend = img || image;
     if (!imageToSend || !imageToSend.base64) {
