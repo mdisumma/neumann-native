@@ -1,0 +1,34 @@
+{
+  "tests": {
+    "visual_inspection": {
+      "name": "Visual Inspection",
+      "description": "Covers checks of physical appearance, surface quality, labeling, and visible defects",
+      "display_order": 1,
+      "items": [
+        {
+          "execution_order": "{measurement.test.execution_order}",
+          "name": "{measurement.test.name}",
+          "description": "{measurement.test.description}",
+          "response_type": "{measurement.test.response_type.name}",
+          "is_user_response_required": "{measurement.test.is_user_response_required}",
+          "measure": "{measurement.test.measure.unit.name}",
+          "scale": "{measurement.test.scale}",
+          "lower_limits": "{measurement.test.lower_limits}",
+          "upper_limits": "{measurement.test.upper_limits}"
+        }
+      ]
+    },
+    "electrical_inspection": {
+      "name": "Electrical Inspection",
+      "description": "Includes tests of wiring, connections, insulation, and compliance with electrical safety standards",
+      "display_order": 2,
+      "items": []
+    },
+    "functional_inspection": {
+      "name": "Functional Inspection",
+      "description": "Validates that the item operates as intended under normal conditions",
+      "display_order": 3,
+      "items": []
+    }
+  }
+}

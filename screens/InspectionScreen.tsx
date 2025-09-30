@@ -26,8 +26,10 @@ interface Props {
 type Answer = "yes" | "no" | null;
 
 export default function InspectionScreen({ navigation }: Props) {
-  // single state for all answers
+  // single state for all answers (visual + functional)
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
+  // typed boolean state
+  const [measure, setMeasure] = useState<boolean>(false);
 
   // simple toggle function
   function toggleAnswer(questionKey: string, clickedValue: "yes" | "no") {
@@ -85,21 +87,23 @@ export default function InspectionScreen({ navigation }: Props) {
         </Text>
 
         {inspectionJSON.visual_inspection.questions.map((question) => (
-          <View key={question.order} style={{ marginBottom: 16 }}>
+          <View key={`visual-${question.order}`} style={{ marginBottom: 16 }}>
             <Text style={styles.questionText}>{question.name}</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonSx,
-                  answers[question.order] === "yes" && styles.selectedButton,
+                  answers[`visual-${question.order}`] === "yes" &&
+                    styles.selectedButton,
                 ]}
-                onPress={() => toggleAnswer(question.order, "yes")}
+                onPress={() => toggleAnswer(`visual-${question.order}`, "yes")}
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    answers[question.order] === "yes" && styles.selectedText,
+                    answers[`visual-${question.order}`] === "yes" &&
+                      styles.selectedText,
                   ]}
                 >
                   Yes
@@ -110,14 +114,16 @@ export default function InspectionScreen({ navigation }: Props) {
                 style={[
                   styles.button,
                   styles.buttonDx,
-                  answers[question.order] === "no" && styles.selectedButton,
+                  answers[`visual-${question.order}`] === "no" &&
+                    styles.selectedButton,
                 ]}
-                onPress={() => toggleAnswer(question.order, "no")}
+                onPress={() => toggleAnswer(`visual-${question.order}`, "no")}
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    answers[question.order] === "no" && styles.selectedText,
+                    answers[`visual-${question.order}`] === "no" &&
+                      styles.selectedText,
                   ]}
                 >
                   No
@@ -134,11 +140,14 @@ export default function InspectionScreen({ navigation }: Props) {
           {inspectionJSON.electrical_safety.section}
         </Text>
         <View style={styles.buttonWrapper}>
-          <View style={styles.measureButton}>
+          <View
+            style={[styles.measureButton, measure && styles.selectedButton]}
+          >
             <Button
               title="Measure"
-              color="#142C44"
+              color={measure ? "#E6ECF2" : "#142C44"}
               onPress={() => {
+                setMeasure(true);
                 console.log("Measure button pressed");
               }}
             />
@@ -150,17 +159,27 @@ export default function InspectionScreen({ navigation }: Props) {
             <Text style={styles.measurementsDescription}>
               {measurement.description}
             </Text>
-            <View style={styles.measured}>
-              <MaterialIcons
-                name="check-circle-outline"
-                size={24}
-                color="#142C44"
-              />
-
-              <Text style={styles.limits}>
-                {measurement.limits.min} {measurement.unit}
-              </Text>
-            </View>
+            {measure === false ? (
+              <View style={styles.measured}>
+                <MaterialIcons
+                  name="radio-button-unchecked"
+                  size={24}
+                  color="#142C44"
+                />
+                <Text style={styles.limits}>Not Measured</Text>
+              </View>
+            ) : (
+              <View style={styles.measured}>
+                <MaterialIcons
+                  name="check-circle-outline"
+                  size={24}
+                  color="#142C44"
+                />
+                <Text style={styles.limits}>
+                  {measurement.limits.min} {measurement.unit}
+                </Text>
+              </View>
+            )}
           </View>
         ))}
       </View>
@@ -172,21 +191,28 @@ export default function InspectionScreen({ navigation }: Props) {
         </Text>
 
         {inspectionJSON.functional_test.questions.map((question) => (
-          <View key={question.order} style={{ marginBottom: 16 }}>
+          <View
+            key={`functional-${question.order}`}
+            style={{ marginBottom: 16 }}
+          >
             <Text style={styles.questionText}>{question.name}</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonSx,
-                  answers[question.order] === "yes" && styles.selectedButton,
+                  answers[`functional-${question.order}`] === "yes" &&
+                    styles.selectedButton,
                 ]}
-                onPress={() => toggleAnswer(question.order, "yes")}
+                onPress={() =>
+                  toggleAnswer(`functional-${question.order}`, "yes")
+                }
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    answers[question.order] === "yes" && styles.selectedText,
+                    answers[`functional-${question.order}`] === "yes" &&
+                      styles.selectedText,
                   ]}
                 >
                   Yes
@@ -197,14 +223,18 @@ export default function InspectionScreen({ navigation }: Props) {
                 style={[
                   styles.button,
                   styles.buttonDx,
-                  answers[question.order] === "no" && styles.selectedButton,
+                  answers[`functional-${question.order}`] === "no" &&
+                    styles.selectedButton,
                 ]}
-                onPress={() => toggleAnswer(question.order, "no")}
+                onPress={() =>
+                  toggleAnswer(`functional-${question.order}`, "no")
+                }
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    answers[question.order] === "no" && styles.selectedText,
+                    answers[`functional-${question.order}`] === "no" &&
+                      styles.selectedText,
                   ]}
                 >
                   No
@@ -214,6 +244,7 @@ export default function InspectionScreen({ navigation }: Props) {
           </View>
         ))}
       </View>
+
       {/* Action Button */}
       <View style={styles.buttonWrapper}>
         <View style={styles.actionButton}>
@@ -318,12 +349,12 @@ const styles = StyleSheet.create({
   },
   measured: {
     paddingTop: 16,
-    flexDirection: "row", // put items in a row
-    alignItems: "center", // vertically center icon + text
-    justifyContent: "center", // center the whole row horizontally
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   limits: {
-    marginLeft: 8, // space between icon and text
+    marginLeft: 8,
     fontSize: 16,
     color: "#142C44",
   },
