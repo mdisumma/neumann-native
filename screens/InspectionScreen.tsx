@@ -26,17 +26,33 @@ interface Props {
 type Answer = "yes" | "no" | null;
 
 export default function InspectionScreen({ navigation }: Props) {
-  // single state for all answers (visual + functional)
+  // single state for all answers
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
-  // typed boolean state
   const [measure, setMeasure] = useState<boolean>(false);
 
-  // simple toggle function
+  // toggle function
   function toggleAnswer(questionKey: string, clickedValue: "yes" | "no") {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionKey]: prev[questionKey] === clickedValue ? null : clickedValue,
-    }));
+    console.log(answers);
+    setAnswers((prevAnswers) => {
+      // get the current stored answer for this question
+      const currentAnswer = prevAnswers[questionKey];
+
+      let newAnswer: Answer;
+
+      // if the same option is clicked again, reset it
+      if (currentAnswer === clickedValue) {
+        newAnswer = null;
+      } else {
+        // otherwise set the new answer
+        newAnswer = clickedValue;
+      }
+
+      // return all previous answers + this updated one
+      return {
+        ...prevAnswers,
+        [questionKey]: newAnswer,
+      };
+    });
   }
 
   return (
@@ -88,8 +104,11 @@ export default function InspectionScreen({ navigation }: Props) {
 
         {inspectionJSON.visual_inspection.questions.map((question) => (
           <View key={`visual-${question.order}`} style={{ marginBottom: 16 }}>
+            {/* Show the question text */}
             <Text style={styles.questionText}>{question.name}</Text>
+
             <View style={styles.buttonContainer}>
+              {/* YES button */}
               <TouchableOpacity
                 style={[
                   styles.button,
@@ -97,6 +116,7 @@ export default function InspectionScreen({ navigation }: Props) {
                   answers[`visual-${question.order}`] === "yes" &&
                     styles.selectedButton,
                 ]}
+                // When pressed: call toggleAnswer with "yes"
                 onPress={() => toggleAnswer(`visual-${question.order}`, "yes")}
               >
                 <Text
@@ -110,6 +130,7 @@ export default function InspectionScreen({ navigation }: Props) {
                 </Text>
               </TouchableOpacity>
 
+              {/* NO button */}
               <TouchableOpacity
                 style={[
                   styles.button,
@@ -117,6 +138,7 @@ export default function InspectionScreen({ navigation }: Props) {
                   answers[`visual-${question.order}`] === "no" &&
                     styles.selectedButton,
                 ]}
+                // When pressed: call toggleAnswer with "no"
                 onPress={() => toggleAnswer(`visual-${question.order}`, "no")}
               >
                 <Text
@@ -191,27 +213,25 @@ export default function InspectionScreen({ navigation }: Props) {
         </Text>
 
         {inspectionJSON.functional_test.questions.map((question) => (
-          <View
-            key={`functional-${question.order}`}
-            style={{ marginBottom: 16 }}
-          >
+          <View key={`func-${question.order}`} style={{ marginBottom: 16 }}>
+            {/* Show the question text */}
             <Text style={styles.questionText}>{question.name}</Text>
+
             <View style={styles.buttonContainer}>
+              {/* YES button */}
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonSx,
-                  answers[`functional-${question.order}`] === "yes" &&
+                  answers[`func-${question.order}`] === "yes" &&
                     styles.selectedButton,
                 ]}
-                onPress={() =>
-                  toggleAnswer(`functional-${question.order}`, "yes")
-                }
+                onPress={() => toggleAnswer(`func-${question.order}`, "yes")}
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    answers[`functional-${question.order}`] === "yes" &&
+                    answers[`func-${question.order}`] === "yes" &&
                       styles.selectedText,
                   ]}
                 >
@@ -219,21 +239,20 @@ export default function InspectionScreen({ navigation }: Props) {
                 </Text>
               </TouchableOpacity>
 
+              {/* NO button */}
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonDx,
-                  answers[`functional-${question.order}`] === "no" &&
+                  answers[`func-${question.order}`] === "no" &&
                     styles.selectedButton,
                 ]}
-                onPress={() =>
-                  toggleAnswer(`functional-${question.order}`, "no")
-                }
+                onPress={() => toggleAnswer(`func-${question.order}`, "no")}
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    answers[`functional-${question.order}`] === "no" &&
+                    answers[`func-${question.order}`] === "no" &&
                       styles.selectedText,
                   ]}
                 >
