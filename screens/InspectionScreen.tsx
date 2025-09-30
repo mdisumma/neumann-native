@@ -1,15 +1,3 @@
-// ============================================================================
-// INSPECTION SCREEN - Main screen for conducting equipment inspections
-// ============================================================================
-// This screen displays an inspection form with different sections:
-// 1. Inspection header (ID, date, class)
-// 2. Device information (model, voltage, etc.)
-// 3. Visual inspection questions (Yes/No answers)
-// 4. Electrical safety measurements
-// 5. Functional test questions (Yes/No answers)
-// 6. Results button to proceed to next screen
-// ============================================================================
-
 // Import navigation types for type safety
 import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -29,10 +17,6 @@ import {
 } from "../components/inspection";
 import { InspectionContext } from "../context/InspectionContext";
 
-// ============================================================================
-// TYPE DEFINITIONS
-// ============================================================================
-
 // Define the navigation prop type for this screen
 type InspectionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -47,13 +31,10 @@ interface Props {
 // Define possible answer values for inspection questions
 type Answer = "yes" | "no" | null; // null means no answer selected yet
 
-// ============================================================================
 // MAIN COMPONENT
-// ============================================================================
+
 export default function InspectionScreen({ navigation }: Props) {
-  // ============================================================================
   // STATE MANAGEMENT
-  // ============================================================================
 
   // Store user's answers for each question (for button highlighting)
   // Example: { "visual-1": "yes", "func-2": "no", "visual-3": null }
@@ -65,9 +46,8 @@ export default function InspectionScreen({ navigation }: Props) {
   // Get inspection data from React Context (shared state across the app)
   const { inspectionData, setInspectionData } = useContext(InspectionContext);
 
-  // ============================================================================
   // INITIALIZATION - Run when component first loads
-  // ============================================================================
+
   useEffect(() => {
     // If no inspection data exists in context, load it from JSON file
     if (!inspectionData || Object.keys(inspectionData).length === 0) {
@@ -76,9 +56,7 @@ export default function InspectionScreen({ navigation }: Props) {
     }
   }, []); // Empty dependency array = only run once when component mounts
 
-  // ============================================================================
   // HELPER FUNCTIONS
-  // ============================================================================
 
   /**
    * Updates a specific question's answer in the inspection data
@@ -93,12 +71,12 @@ export default function InspectionScreen({ navigation }: Props) {
   ) {
     // Safety check: make sure we have inspection data
     if (!inspectionData) {
-      console.log("❌ No inspection data available - cannot update question");
+      console.log("No inspection data available - cannot update question");
       return;
     }
 
     console.log(
-      `📝 Updating question ${questionNumber} in section "${sectionName}" with answer: ${answer}`
+      `Updating question ${questionNumber} in section "${sectionName}" with answer: ${answer}`
     );
 
     // Get the list of questions for this section
@@ -108,7 +86,7 @@ export default function InspectionScreen({ navigation }: Props) {
     for (let i = 0; i < questionList.length; i++) {
       // Compare question order numbers (convert both to numbers for safety)
       if (Number(questionList[i].order) === Number(questionNumber)) {
-        console.log(`✅ Found question at position ${i} - updating answer`);
+        console.log(`Found question at position ${i} - updating answer`);
 
         // Update the question's value directly
         questionList[i].value = answer;
@@ -152,16 +130,13 @@ export default function InspectionScreen({ navigation }: Props) {
     updateQuestionValue(sectionName, questionOrder, answer);
   };
 
-  // ============================================================================
   // DEBUG LOGGING - Shows complete inspection data in console
-  // ============================================================================
-  console.log("📊 === CURRENT INSPECTION DATA ===");
-  console.log(JSON.stringify(inspectionData, null, 2));
-  console.log("📊 === END INSPECTION DATA ===");
 
-  // ============================================================================
+  console.log("CURRENT INSPECTION DATA");
+  console.log(JSON.stringify(inspectionData, null, 2));
+
   // RENDER THE USER INTERFACE
-  // ============================================================================
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* 
@@ -248,9 +223,8 @@ export default function InspectionScreen({ navigation }: Props) {
   );
 }
 
-// ============================================================================
 // STYLING - All the visual styles for this screen
-// ============================================================================
+
 const styles = StyleSheet.create({
   // Main container that holds all content
   container: {
