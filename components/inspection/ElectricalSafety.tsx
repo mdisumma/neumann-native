@@ -2,32 +2,27 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
-interface Measurement {
-  order: string | number;
-  name: string;
-  description: string;
-  limits: {
-    min: string | number;
-  };
-  unit: string;
-}
-
 interface ElectricalSafetyProps {
-  section: string;
-  measurements: Measurement[];
+  questions: {
+    execution_order: string | number;
+    name: string;
+    description: string;
+    measure: string;
+    lower_limits: number;
+    upper_limits: number;
+  }[];
   isMeasured: boolean;
   onMeasurePress: () => void;
 }
 
 export default function ElectricalSafety({
-  section,
-  measurements,
+  questions,
   isMeasured,
   onMeasurePress,
 }: ElectricalSafetyProps) {
   return (
     <View style={styles.responseBox}>
-      <Text style={styles.sectionTitle}>{section}</Text>
+      <Text style={styles.sectionTitle}>Electrical Safety Test</Text>
 
       {/* Measure Button */}
       <View style={styles.buttonWrapper}>
@@ -43,11 +38,14 @@ export default function ElectricalSafety({
       </View>
 
       {/* Measurements List */}
-      {measurements.map((measurement) => (
-        <View key={measurement.order} style={styles.measurementContainer}>
-          <Text style={styles.measurementsName}>{measurement.name}</Text>
+      {questions.map((question) => (
+        <View
+          key={question.execution_order}
+          style={styles.measurementContainer}
+        >
+          <Text style={styles.measurementsName}>{question.name}</Text>
           <Text style={styles.measurementsDescription}>
-            {measurement.description}
+            {question.description}
           </Text>
 
           <View style={styles.measured}>
@@ -60,7 +58,7 @@ export default function ElectricalSafety({
             />
             <Text style={styles.limits}>
               {isMeasured
-                ? `${measurement.limits.min} ${measurement.unit}`
+                ? `from ${question.lower_limits} to ${question.upper_limits} ${question.measure}`
                 : "Not Measured"}
             </Text>
           </View>

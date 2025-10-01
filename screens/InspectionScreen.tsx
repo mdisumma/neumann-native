@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
 // Import inspection data and components
-import inspectionJSON from "../api/inspection.json";
 import {
   DeviceInfo,
   ElectricalSafety,
@@ -63,12 +62,12 @@ export default function InspectionScreen({ navigation }: Props) {
 
       <VisualInspection
         questions={inspectionData.tests.visual_inspection.items}
-        key={inspectionData.tests.visual_inspection.items}
+        key={inspectionData.tests.visual_inspection.display_order}
       />
 
       <ElectricalSafety
-        section={inspectionJSON.electrical_safety.section}
-        measurements={inspectionJSON.electrical_safety.measurements}
+        questions={inspectionData.tests.electrical_inspection.items}
+        key={inspectionData.tests.electrical_inspection.display_order}
         isMeasured={isMeasured}
         onMeasurePress={() => {
           console.log("🔌 User pressed Measure button");
@@ -78,7 +77,7 @@ export default function InspectionScreen({ navigation }: Props) {
 
       <FunctionalTest
         questions={inspectionData.tests.functional_inspection.items}
-        key={inspectionData.tests.functional_inspection.items}
+        key={inspectionData.tests.functional_inspection.display_order}
       />
 
       <View style={styles.buttonWrapper}>
