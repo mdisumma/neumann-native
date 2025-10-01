@@ -1,16 +1,20 @@
+// Camera Screen: Take photo → AI analysis → Store in global context
+
+// React & React Native
+import { useContext, useEffect, useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+
+// Navigation
 import { StackNavigationProp } from "@react-navigation/stack";
-import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
 import { RootStackParamList } from "../types/navigation";
 
+// External Libraries
+import * as ImagePicker from "expo-image-picker";
+
+// Internal
+import { InspectionContext } from "../context/InspectionContext";
+
+// Types
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Camera"
@@ -21,14 +25,18 @@ interface Props {
 }
 
 export default function CameraScreen({ navigation }: Props) {
-  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | null>(null); // stores the URI and base64
+  const { inspectionData, setInspectionData } = useContext(InspectionContext);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<{
-    device?: string;
-    error?: string;
-  } | null>(null);
 
-  // Open camera to take a photo and send it automatically
+  // Monitor global data changes
+  useEffect(() => {
+    if (Object.keys(inspectionData || {}).length > 0) {
+      console.log("🌍 Global inspection data updated:");
+      console.log(JSON.stringify(inspectionData, null, 2));
+    }
+  }, [inspectionData]);
+
+  // Handle camera capture and permissions
   const takePhoto = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
     if (!granted) {
@@ -40,35 +48,30 @@ export default function CameraScreen({ navigation }: Props) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64: true, // get base64 directly
+      base64: true, // Required for API
     });
 
     if (!result.canceled) {
-      const img = result.assets[0];
-      setImage(img); // update state for UI
-      // Automatically send image to API
-      sendImage(img);
+      const photo = result.assets[0];
+      console.log("📸 Photo captured, starting AI analysis...");
+      await analyzePhotoWithAI(photo);
     }
   };
 
-  // Send the image to the API
-  const sendImage = async (img: ImagePicker.ImagePickerAsset | null) => {
-    const imageToSend = img || image;
-    if (!imageToSend || !imageToSend.base64) {
-      alert("No image selected!");
-      return;
-    }
+  // Send photo to AI API and handle response
+  const analyzePhotoWithAI = async (photo: ImagePicker.ImagePickerAsset) => {
+    if (!photo.base64) return;
+
+    setLoading(true);
 
     try {
-      setLoading(true);
-      setResponse(null);
-
-      const body = {
+      const requestBody = {
         mime_type: "image/jpeg",
-        image_data_base64: imageToSend.base64,
+        image_data_base64: photo.base64,
       };
 
-      const res = await fetch(
+      // API call to AI analysis service
+      const response = await fetch(
         "https://radon.ironapi.com/v1/plugins/ai_analyze_image",
         {
           method: "POST",
@@ -76,87 +79,58 @@ export default function CameraScreen({ navigation }: Props) {
             accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(body),
+          body: JSON.stringify(requestBody),
         }
       );
 
-      const json = await res.json();
-      console.log("json:", JSON.stringify(json, null, 2));
+      const analysisResult = await response.json();
+      console.log("✅ AI analysis received:");
+      console.log(JSON.stringify(analysisResult, null, 2));
 
-      // ✅ keep raw JSON object in state
-      setResponse(json);
-    } catch (err) {
-      console.error(err);
-      setResponse({
-        error:
-          typeof err === "object" && err !== null && "message" in err
-            ? String((err as { message?: unknown }).message)
-            : String(err),
-      });
+      // Store in global context
+      setInspectionData(analysisResult);
+
+      // Redirect to inspection screen on success
+      navigation.navigate("Inspection");
+    } catch (error) {
+      console.error("❌ AI analysis error:", error);
+
+      const errorResult = {
+        error: error instanceof Error ? error.message : String(error),
+        timestamp: new Date().toISOString(),
+      };
+
+      setInspectionData(errorResult);
+      // Don't redirect on error, let user see the error state
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* {!image && <Button title="Take Photo" onPress={takePhoto} />} */}
-      {!image && (
-        <Button
-          title="Take Photo"
-          onPress={() => navigation.navigate("Inspection")}
-        />
+    <View style={styles.container}>
+      <Button title="Take a Photo" onPress={takePhoto} disabled={loading} />
+
+      {loading && (
+        <Text style={styles.loadingText}>🤖 Analyzing photo with AI...</Text>
       )}
-
-      {image && <Image source={{ uri: image.uri }} style={styles.image} />}
-
-      {loading && <Text style={styles.label}>Sending image...</Text>}
-
-      {response && (
-        <View style={styles.responseBox}>
-          <Text style={styles.sectionTitle}>Device Info</Text>
-          <Text style={styles.response}>Device: {response.device}</Text>
-        </View>
-      )}
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backgroundColor: "#fff",
+    gap: 20,
   },
-  label: { fontSize: 18, marginBottom: 20, textAlign: "center" },
-  image: { width: 300, height: 300, borderRadius: 12, marginVertical: 20 },
-  responseBox: {
-    marginTop: 20,
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: "#f4f4f4",
-    width: "100%",
-  },
-  sectionTitle: {
+  loadingText: {
     fontSize: 16,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 5,
-    color: "#333",
+    color: "#142C44",
+    textAlign: "center",
+    fontStyle: "italic",
   },
-  response: {
-    fontSize: 14,
-    color: "black",
-    marginBottom: 5,
-  },
-  testItem: {
-    marginBottom: 10,
-    paddingLeft: 10,
-    borderLeftWidth: 2,
-    borderLeftColor: "#007AFF",
-  },
-  testName: { fontWeight: "600", fontSize: 14, color: "#222" },
-  testDesc: { fontSize: 13, color: "#555" },
 });

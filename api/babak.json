@@ -1,4 +1,25 @@
 {
+  "device": "Cordless Circular Saw",
+  "faults": [],
+  "technical_data": {
+    "serial_number": "N913722",
+    "model_number": "DCS391",
+    "voltage": "18V",
+    "power": "760W",
+    "no_load_speed": "5150/min",
+    "blade_diameter": "165mm",
+    "max_cutting_depth": "55mm",
+    "manufacturer": "DEWALT",
+    "manufacturer_address_uk": "Slough, England SL1 4DX",
+    "manufacturer_address_eu": "65509 Idstein, Germany",
+    "country_of_origin": "Czech Republic",
+    "type": "TYPE 11"
+  },
+  "appliance_classification": {
+    "type": "Power Tools",
+    "protection_class": "Protection Class II",
+    "reason": "The tool has double or reinforced insulation, as indicated by the Protection Class II symbol (double square) present on the label. This eliminates the need for a protective earth connection."
+  },
   "tests": {
     "visual_inspection": {
       "name": "Visual Inspection",
@@ -6,15 +27,15 @@
       "display_order": 1,
       "items": [
         {
-          "execution_order": "{measurement.test.execution_order}",
-          "name": "{measurement.test.name}",
-          "description": "{measurement.test.description}",
-          "response_type": "{measurement.test.response_type.name}",
-          "is_user_response_required": "{measurement.test.is_user_response_required}",
-          "measure": "{measurement.test.measure.unit.name}",
-          "scale": "{measurement.test.scale}",
-          "lower_limits": "{measurement.test.lower_limits}",
-          "upper_limits": "{measurement.test.upper_limits}"
+          "execution_order": 1,
+          "name": "Is there damage to the casing",
+          "description": " cables or the plug? Please make sure that you inspect the device thoroughly.",
+          "response_type": "boolean",
+          "is_user_response_required": true,
+          "measure": null,
+          "scale": null,
+          "lower_limits": null,
+          "upper_limits": null
         }
       ]
     },
@@ -22,13 +43,85 @@
       "name": "Electrical Inspection",
       "description": "Includes tests of wiring, connections, insulation, and compliance with electrical safety standards",
       "display_order": 2,
-      "items": []
+      "items": [
+        {
+          "execution_order": 1,
+          "name": "Class II Insulation Integrity",
+          "description": "Insulation resistance verification for Class II devices according to 5.4 (when feasible). Minimum: 2.0MΩ",
+          "response_type": "numeric",
+          "is_user_response_required": false,
+          "measure": "ohm",
+          "scale": 0.001,
+          "lower_limits": 0,
+          "upper_limits": 2
+        },
+        {
+          "execution_order": 2,
+          "name": "Touch Current Verification",
+          "description": "Contact current measurement for Class II/III devices per 5.6 (after passed insulation test). Limit: ≤0.5mA",
+          "response_type": "numeric",
+          "is_user_response_required": false,
+          "measure": "ampere",
+          "scale": 0.001,
+          "lower_limits": 0,
+          "upper_limits": 0.5
+        },
+        {
+          "execution_order": 3,
+          "name": "Alternative Leakage Test (Class II/III)",
+          "description": "Substitute leakage measurement for Class II/III devices per 5.7 (alternative to 5.6). Limit: ≤0.5mA",
+          "response_type": "numeric",
+          "is_user_response_required": false,
+          "measure": "ampere",
+          "scale": 0.001,
+          "lower_limits": 0,
+          "upper_limits": 0.5
+        }
+      ]
     },
     "functional_inspection": {
       "name": "Functional Inspection",
       "description": "Validates that the item operates as intended under normal conditions",
       "display_order": 3,
-      "items": []
+      "items": [
+        {
+          "execution_order": 1,
+          "name": "Does the device power on and function correctly?",
+          "description": "Validate normal operation and safety features",
+          "response_type": "boolean",
+          "is_user_response_required": true,
+          "measure": null,
+          "scale": null,
+          "lower_limits": null,
+          "upper_limits": null
+        },
+        {
+          "execution_order": 2,
+          "name": "Are there any unusual noises",
+          "description": " smells, or vibrations during operation? Validate normal operation and safety features",
+          "response_type": "boolean",
+          "is_user_response_required": true,
+          "measure": null,
+          "scale": null,
+          "lower_limits": null,
+          "upper_limits": null
+        }
+      ]
+    }
+  },
+  "session_id": "98c65abe-8551-49a3-b9d0-ca77a8740ff1",
+  "_meta": {
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "image_analysis_time": "3.533s",
+    "db_retrieval_time": "5.7ms",
+    "env": "demo",
+    "debug_info": {
+      "appliance_type_extracted": "Power Tools",
+      "protection_class_extracted": "Protection Class II",
+      "protection_class_numeric": 2,
+      "tests_found": true,
+      "retry_attempts": 1
     }
   }
 }
