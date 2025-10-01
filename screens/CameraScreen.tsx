@@ -1,7 +1,7 @@
 // Camera Screen: Take photo → AI analysis → Store in global context
 
 // React & React Native
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
 // Navigation
@@ -29,12 +29,12 @@ export default function CameraScreen({ navigation }: Props) {
   const [loading, setLoading] = useState(false);
 
   // Monitor global data changes
-  useEffect(() => {
-    if (Object.keys(inspectionData || {}).length > 0) {
-      console.log("🌍 Global inspection data updated:");
-      console.log(JSON.stringify(inspectionData, null, 2));
-    }
-  }, [inspectionData]);
+  // useEffect(() => {
+  //   if (Object.keys(inspectionData || {}).length > 0) {
+  //     console.log("🌍 Global inspection data updated:");
+  //     console.log(JSON.stringify(inspectionData, null, 2));
+  //   }
+  // }, [inspectionData]);
 
   // Handle camera capture and permissions
   const takePhoto = async () => {

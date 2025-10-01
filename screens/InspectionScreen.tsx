@@ -54,8 +54,10 @@ export default function InspectionScreen({ navigation }: Props) {
         Shows basic inspection info: class, ID, date, and image from camera/API
       */}
       <InspectionHeader
-        inspectionClass={""}
-        identifier={""}
+        inspectionClass={
+          inspectionData.appliance_classification?.protection_class ?? ""
+        }
+        identifier={inspectionData.session_id}
         image={"any-url.com/image.jpg"}
       />
 
@@ -64,11 +66,11 @@ export default function InspectionScreen({ navigation }: Props) {
         Shows details about the device being inspected
       */}
       <DeviceInfo
-        section={""}
-        device={""}
-        model={""}
-        voltage={""}
-        serialNumber={""}
+        section={"Device Information"}
+        device={inspectionData.device}
+        model={inspectionData.technical_data.model_number}
+        voltage={inspectionData.technical_data.voltage}
+        serialNumber={inspectionData.technical_data.serial_number}
       />
 
       {/* 
