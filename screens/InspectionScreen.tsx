@@ -39,20 +39,12 @@ export default function InspectionScreen({ navigation }: Props) {
   // Get inspection data from React Context (shared state across the app)
   const { inspectionData, setInspectionData } = useContext(InspectionContext);
 
-  // INITIALIZATION - Run when component first loads
-
   useEffect(() => {
     console.log(JSON.stringify(inspectionData, null, 2));
   }, []); // Empty dependency array = only run once when component mounts
 
-  // RENDER THE USER INTERFACE
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* 
-        SECTION 1: INSPECTION HEADER 
-        Shows basic inspection info: class, ID, date, and image from camera/API
-      */}
       <InspectionHeader
         inspectionClass={
           inspectionData.appliance_classification?.protection_class ?? ""
@@ -61,10 +53,6 @@ export default function InspectionScreen({ navigation }: Props) {
         image={"any-url.com/image.jpg"}
       />
 
-      {/* 
-        SECTION 2: DEVICE INFORMATION 
-        Shows details about the device being inspected
-      */}
       <DeviceInfo
         section={"Device Information"}
         device={inspectionData.device}
@@ -73,23 +61,11 @@ export default function InspectionScreen({ navigation }: Props) {
         serialNumber={inspectionData.technical_data.serial_number}
       />
 
-      {/* 
-        SECTION 3: VISUAL INSPECTION 
-        Questions about what the inspector can see
-        Users answer Yes/No to each question
-      */}
       <VisualInspection
-        section={""}
-        questions={[]}
-        answers={{}}
-        onAnswerUpdate={() => {}}
+        questions={inspectionData.tests.visual_inspection.items}
+        key={inspectionData.tests.visual_inspection.items}
       />
 
-      {/* 
-        SECTION 4: ELECTRICAL SAFETY 
-        Measurements and tests for electrical safety
-        Shows "Measure" button and measurement results
-      */}
       <ElectricalSafety
         section={inspectionJSON.electrical_safety.section}
         measurements={inspectionJSON.electrical_safety.measurements}
@@ -100,22 +76,11 @@ export default function InspectionScreen({ navigation }: Props) {
         }}
       />
 
-      {/* 
-        SECTION 5: FUNCTIONAL TEST 
-        Questions about how the device works
-        Users answer Yes/No to each question
-      */}
       <FunctionalTest
-        section={""}
-        questions={[]}
-        answers={{}}
-        onAnswerUpdate={() => {}}
+        questions={inspectionData.tests.functional_inspection.items}
+        key={inspectionData.tests.functional_inspection.items}
       />
 
-      {/* 
-        SECTION 6: FINISH INSPECTION 
-        Button to complete inspection and see results
-      */}
       <View style={styles.buttonWrapper}>
         <View style={styles.actionButton}>
           <Button
@@ -133,8 +98,6 @@ export default function InspectionScreen({ navigation }: Props) {
     </ScrollView>
   );
 }
-
-// STYLING - All the visual styles for this screen
 
 const styles = StyleSheet.create({
   // Main container that holds all content
