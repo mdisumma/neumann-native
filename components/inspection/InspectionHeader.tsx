@@ -4,28 +4,39 @@ import { Image, StyleSheet, Text, View } from "react-native";
 interface InspectionHeaderProps {
   inspectionClass: string;
   identifier: string;
-  date: string;
-  reminder: string;
+  image?: string | null; // URL string or base64 string from API
 }
 
 export default function InspectionHeader({
   inspectionClass,
   identifier,
-  date,
-  reminder,
+  image,
 }: InspectionHeaderProps) {
+  // Handle image URL from API database
+  const getImageSource = () => {
+    if (
+      image &&
+      (image.startsWith("http://") || image.startsWith("https://"))
+    ) {
+      // Network URL from API database
+      return { uri: image };
+    }
+
+    // Fallback to local image if no API image URL
+    return require("../../assets/images/test.png");
+  };
+
   return (
     <View style={styles.responseBox}>
       <Text style={styles.sectionTitle}>
         Inspection Class: {inspectionClass}
       </Text>
       <Image
-        source={require("../../assets/images/test.jpg")}
+        source={getImageSource()}
         style={styles.image}
+        resizeMode="cover"
       />
       <Text style={styles.response}>ID: {identifier}</Text>
-      <Text style={styles.response}>Date: {date}</Text>
-      <Text style={styles.response}>Reminder: {reminder}</Text>
     </View>
   );
 }

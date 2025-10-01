@@ -28,17 +28,10 @@ interface Props {
   navigation: InspectionScreenNavigationProp;
 }
 
-// Define possible answer values for inspection questions
-type Answer = "yes" | "no" | null; // null means no answer selected yet
-
 // MAIN COMPONENT
 
 export default function InspectionScreen({ navigation }: Props) {
   // STATE MANAGEMENT
-
-  // Store user's answers for each question (for button highlighting)
-  // Example: { "visual-1": "yes", "func-2": "no", "visual-3": null }
-  const [answers, setAnswers] = useState<Record<string, Answer>>({});
 
   // Track whether electrical measurements have been taken
   const [isMeasured, setIsMeasured] = useState<boolean>(false);
@@ -49,91 +42,8 @@ export default function InspectionScreen({ navigation }: Props) {
   // INITIALIZATION - Run when component first loads
 
   useEffect(() => {
-    // If no inspection data exists in context, load it from JSON file
-    if (!inspectionData || Object.keys(inspectionData).length === 0) {
-      console.log("Loading initial inspection data from JSON file");
-      setInspectionData(inspectionJSON);
-    }
+    console.log(JSON.stringify(inspectionData, null, 2));
   }, []); // Empty dependency array = only run once when component mounts
-
-  // HELPER FUNCTIONS
-
-  /**
-   * Updates a specific question's answer in the inspection data
-   * @param sectionName - The section containing the question (e.g., "visual_inspection")
-   * @param questionNumber - The order number of the question (e.g., 1, 2, 3)
-   * @param answer - The user's answer ("yes", "no", or null to clear)
-   */
-  function updateQuestionValue(
-    sectionName: string,
-    questionNumber: string | number,
-    answer: string | null
-  ) {
-    // Safety check: make sure we have inspection data
-    if (!inspectionData) {
-      console.log("No inspection data available - cannot update question");
-      return;
-    }
-
-    console.log(
-      `Updating question ${questionNumber} in section "${sectionName}" with answer: ${answer}`
-    );
-
-    // Get the list of questions for this section
-    const questionList = inspectionData[sectionName].questions;
-
-    // Look through each question to find the one we want to update
-    for (let i = 0; i < questionList.length; i++) {
-      // Compare question order numbers (convert both to numbers for safety)
-      if (Number(questionList[i].order) === Number(questionNumber)) {
-        console.log(`Found question at position ${i} - updating answer`);
-
-        // Update the question's value directly
-        questionList[i].value = answer;
-
-        // Tell React to re-render by creating a new object reference
-        // This is important: React needs to know the data changed!
-        setInspectionData({ ...inspectionData });
-
-        // Exit the loop since we found and updated our question
-        break;
-      }
-    }
-  }
-
-  /**
-   * Handles when a user answers a question in any of the child components
-   * This function does two things:
-   * 1. Updates the UI (button colors)
-   * 2. Updates the actual inspection data
-   *
-   * @param questionKey - Unique identifier for the question (e.g., "visual-1")
-   * @param answer - The user's answer ("yes", "no", or null)
-   * @param sectionName - Which section the question belongs to
-   * @param questionOrder - The question's order number within the section
-   */
-  const handleAnswerUpdate = (
-    questionKey: string,
-    answer: Answer,
-    sectionName: string,
-    questionOrder: string | number
-  ) => {
-    console.log(`🎯 Handling answer update for ${questionKey}: ${answer}`);
-
-    // STEP 1: Update the UI state (this controls button highlighting)
-    setAnswers((previousAnswers) => ({
-      ...previousAnswers, // Keep all existing answers
-      [questionKey]: answer, // Update this specific question's answer
-    }));
-
-    // STEP 2: Update the actual inspection data (this saves the answer)
-    updateQuestionValue(sectionName, questionOrder, answer);
-  };
-
-  // DEBUG LOGGING - Shows complete inspection data in console
-
-  console.log("CURRENT INSPECTION DATA");
-  console.log(JSON.stringify(inspectionData, null, 2));
 
   // RENDER THE USER INTERFACE
 
@@ -141,13 +51,12 @@ export default function InspectionScreen({ navigation }: Props) {
     <ScrollView contentContainerStyle={styles.container}>
       {/* 
         SECTION 1: INSPECTION HEADER 
-        Shows basic inspection info: class, ID, date, reminder
+        Shows basic inspection info: class, ID, date, and image from camera/API
       */}
       <InspectionHeader
-        inspectionClass={inspectionJSON.inspection.inspection_class}
-        identifier={inspectionJSON.inspection.identifier}
-        date={inspectionJSON.inspection.date}
-        reminder={inspectionJSON.inspection.reminder}
+        inspectionClass={""}
+        identifier={""}
+        image={"any-url.com/image.jpg"}
       />
 
       {/* 
@@ -155,11 +64,11 @@ export default function InspectionScreen({ navigation }: Props) {
         Shows details about the device being inspected
       */}
       <DeviceInfo
-        section={inspectionJSON.device_info.section}
-        device={inspectionJSON.device_info.device}
-        model={inspectionJSON.device_info.model}
-        voltage={inspectionJSON.device_info.voltage}
-        serialNumber={inspectionJSON.device_info.serial_number}
+        section={""}
+        device={""}
+        model={""}
+        voltage={""}
+        serialNumber={""}
       />
 
       {/* 
@@ -168,10 +77,10 @@ export default function InspectionScreen({ navigation }: Props) {
         Users answer Yes/No to each question
       */}
       <VisualInspection
-        section={inspectionJSON.visual_inspection.section}
-        questions={inspectionJSON.visual_inspection.questions}
-        answers={answers}
-        onAnswerUpdate={handleAnswerUpdate}
+        section={""}
+        questions={[]}
+        answers={{}}
+        onAnswerUpdate={() => {}}
       />
 
       {/* 
@@ -195,10 +104,10 @@ export default function InspectionScreen({ navigation }: Props) {
         Users answer Yes/No to each question
       */}
       <FunctionalTest
-        section={inspectionJSON.functional_test.section}
-        questions={inspectionJSON.functional_test.questions}
-        answers={answers}
-        onAnswerUpdate={handleAnswerUpdate}
+        section={""}
+        questions={[]}
+        answers={{}}
+        onAnswerUpdate={() => {}}
       />
 
       {/* 

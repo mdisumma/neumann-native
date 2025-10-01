@@ -51,7 +51,6 @@ export default function QuestionCard({
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   questionContainer: { marginBottom: 16 },
   questionText: { fontSize: 14, color: "#142C44", marginBottom: 8 },

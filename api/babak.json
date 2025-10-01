@@ -4,21 +4,12 @@
   "technical_data": {
     "serial_number": "N913722",
     "model_number": "DCS391",
-    "voltage": "18V",
-    "power": "760W",
-    "no_load_speed": "5150/min",
-    "blade_diameter": "165mm",
-    "max_cutting_depth": "55mm",
-    "manufacturer": "DEWALT",
-    "manufacturer_address_uk": "Slough, England SL1 4DX",
-    "manufacturer_address_eu": "65509 Idstein, Germany",
-    "country_of_origin": "Czech Republic",
-    "type": "TYPE 11"
+    "voltage": "18V"
   },
   "appliance_classification": {
     "type": "Power Tools",
-    "protection_class": "Protection Class II",
-    "reason": "The tool has double or reinforced insulation, as indicated by the Protection Class II symbol (double square) present on the label. This eliminates the need for a protective earth connection."
+    "protection_class": "Protection Class III",
+    "reason": "The device is battery-operated and runs on a low voltage (18V DC), indicating that it is designed to prevent electrical shock hazards through low voltage, aligning with the principles of Protection Class III devices."
   },
   "tests": {
     "visual_inspection": {
@@ -29,7 +20,7 @@
         {
           "execution_order": 1,
           "name": "Is there damage to the casing",
-          "description": " cables or the plug? Please make sure that you inspect the device thoroughly.",
+          "description": " cables or the plug? Validate normal operation and safety features",
           "response_type": "boolean",
           "is_user_response_required": true,
           "measure": null,
@@ -46,14 +37,14 @@
       "items": [
         {
           "execution_order": 1,
-          "name": "Class II Insulation Integrity",
-          "description": "Insulation resistance verification for Class II devices according to 5.4 (when feasible). Minimum: 2.0MΩ",
+          "name": "Class III Insulation Integrity",
+          "description": "Insulation resistance verification for SELV devices (Class III) according to 5.4 (when feasible). Minimum: 0.25MΩ",
           "response_type": "numeric",
           "is_user_response_required": false,
           "measure": "ohm",
           "scale": 0.001,
           "lower_limits": 0,
-          "upper_limits": 2
+          "upper_limits": 0.25
         },
         {
           "execution_order": 2,
@@ -98,7 +89,7 @@
         {
           "execution_order": 2,
           "name": "Are there any unusual noises",
-          "description": " smells, or vibrations during operation? Validate normal operation and safety features",
+          "description": " smells, or vibrations during operation? Validate safety labels and technical plates",
           "response_type": "boolean",
           "is_user_response_required": true,
           "measure": null,
@@ -109,17 +100,17 @@
       ]
     }
   },
-  "session_id": "98c65abe-8551-49a3-b9d0-ca77a8740ff1",
+  "session_id": "5010931b-7838-4f3b-acd1-1962926014ac",
   "_meta": {
     "provider": "gemini",
     "model": "gemini-2.0-flash",
-    "image_analysis_time": "3.533s",
+    "image_analysis_time": "2.708s",
     "db_retrieval_time": "5.7ms",
     "env": "demo",
     "debug_info": {
       "appliance_type_extracted": "Power Tools",
-      "protection_class_extracted": "Protection Class II",
-      "protection_class_numeric": 2,
+      "protection_class_extracted": "Protection Class III",
+      "protection_class_numeric": 3,
       "tests_found": true,
       "retry_attempts": 1
     }
