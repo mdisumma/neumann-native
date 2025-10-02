@@ -8,8 +8,8 @@ interface ElectricalSafetyProps {
     name: string;
     description: string;
     measure: string;
-    lower_limits: number;
-    upper_limits: number;
+    lower_limits: string | number;
+    upper_limits: string | number;
   }[];
   isMeasured: boolean;
   onMeasurePress: () => void;

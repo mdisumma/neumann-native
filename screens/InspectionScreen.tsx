@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
 // Import inspection data and components
+import fallback from "../api/fallback.json";
 import {
   DeviceInfo,
   ElectricalSafety,
@@ -38,36 +39,52 @@ export default function InspectionScreen({ navigation }: Props) {
   // Get inspection data from React Context (shared state across the app)
   const { inspectionData, setInspectionData } = useContext(InspectionContext);
 
+  // Check if inspectionData is empty and use fallback if needed
+  const isInspectionDataEmpty =
+    !inspectionData || Object.keys(inspectionData).length === 0;
+  const currentInspectionData = isInspectionDataEmpty
+    ? fallback
+    : inspectionData;
+
   useEffect(() => {
-    console.log(JSON.stringify(inspectionData, null, 2));
-  }, []); // Empty dependency array = only run once when component mounts
+    // If context is empty, set it with fallback data
+    if (isInspectionDataEmpty && setInspectionData) {
+      console.log("🔄 InspectionContext is empty, using fallback data");
+      setInspectionData(fallback);
+    }
+
+    console.log(
+      "📋 Current inspection data:",
+      JSON.stringify(currentInspectionData, null, 2)
+    );
+  }, [isInspectionDataEmpty, setInspectionData]); // Re-run if context state changes
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <InspectionHeader
         inspectionClass={
-          inspectionData.appliance_classification?.protection_class ?? ""
+          currentInspectionData.appliance_classification?.protection_class ?? ""
         }
-        identifier={inspectionData.session_id}
+        identifier={currentInspectionData.session_id}
         image={"any-url.com/image.jpg"}
       />
 
       <DeviceInfo
         section={"Device Information"}
-        device={inspectionData.device}
-        model={inspectionData.technical_data.model_number}
-        voltage={inspectionData.technical_data.voltage}
-        serialNumber={inspectionData.technical_data.serial_number}
+        device={currentInspectionData.device}
+        model={currentInspectionData.technical_data.model_number}
+        voltage={currentInspectionData.technical_data.voltage}
+        serialNumber={currentInspectionData.technical_data.serial_number}
       />
 
       <VisualInspection
-        questions={inspectionData.tests.visual_inspection.items}
-        key={inspectionData.tests.visual_inspection.display_order}
+        questions={currentInspectionData.tests.visual_inspection.items}
+        key={currentInspectionData.tests.visual_inspection.display_order}
       />
 
       <ElectricalSafety
-        questions={inspectionData.tests.electrical_inspection.items}
-        key={inspectionData.tests.electrical_inspection.display_order}
+        questions={currentInspectionData.tests.electrical_inspection.items}
+        key={currentInspectionData.tests.electrical_inspection.display_order}
         isMeasured={isMeasured}
         onMeasurePress={() => {
           console.log("🔌 User pressed Measure button");
@@ -76,8 +93,8 @@ export default function InspectionScreen({ navigation }: Props) {
       />
 
       <FunctionalTest
-        questions={inspectionData.tests.functional_inspection.items}
-        key={inspectionData.tests.functional_inspection.display_order}
+        questions={currentInspectionData.tests.functional_inspection.items}
+        key={currentInspectionData.tests.functional_inspection.display_order}
       />
 
       <View style={styles.buttonWrapper}>

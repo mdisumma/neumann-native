@@ -1,0 +1,124 @@
+{
+  "device": "empty",
+  "faults": [],
+  "technical_data": {
+    "serial_number": "empty",
+    "model_number": "empty",
+    "voltage": "empty",
+    "article_number": "empty",
+    "manufacturing_date": "empty",
+    "power_continuous": "empty",
+    "power_max": "empty",
+    "frequency": "empty",
+    "current": "empty",
+    "power_factor": "empty",
+    "generator_class": "empty",
+    "max_altitude": "empty",
+    "max_ambient_temperature": "empty",
+    "weight": "empty",
+    "oil_fuel_ratio": "empty",
+    "engine_displacement": "empty",
+    "ip_rating": "empty",
+    "manufacturer_name": "empty",
+    "manufacturer_address": "empty",
+    "manufacturer_country": "empty"
+  },
+  "appliance_classification": {
+    "type": "empty",
+    "protection_class": "empty",
+    "reason": "empty"
+  },
+  "tests": {
+    "visual_inspection": {
+      "name": "empty",
+      "description": "empty",
+      "display_order": 1,
+      "items": [
+        {
+          "execution_order": 1,
+          "name": "empty",
+          "description": "empty",
+          "response_type": "empty",
+          "is_user_response_required": "empty",
+          "measure": "empty",
+          "scale": "empty",
+          "lower_limits": "empty",
+          "upper_limits": "empty"
+        }
+      ]
+    },
+    "electrical_inspection": {
+      "name": "empty",
+      "description": "empty",
+      "display_order": 2,
+      "items": [
+        {
+          "execution_order": 1,
+          "name": "empty",
+          "description": "empty",
+          "response_type": "empty",
+          "is_user_response_required": false,
+          "measure": "empty",
+          "scale": "empty",
+          "lower_limits": "empty",
+          "upper_limits": "empty"
+        },
+        {
+          "execution_order": 2,
+          "name": "empty",
+          "description": "empty",
+          "response_type": "numeric",
+          "is_user_response_required": false,
+          "measure": "ampere",
+          "scale": "empty",
+          "lower_limits": "empty",
+          "upper_limits": "empty"
+        },
+        {
+          "execution_order": 3,
+          "name": "empty",
+          "description": "empty",
+          "response_type": "empty",
+          "is_user_response_required": false,
+          "measure": "ampere",
+          "scale": "empty",
+          "lower_limits": "empty",
+          "upper_limits": "empty"
+        }
+      ]
+    },
+    "functional_inspection": {
+      "name": "empty",
+      "description": "empty",
+      "display_order": 3,
+      "items": [
+        {
+          "execution_order": 1,
+          "name": "empty",
+          "description": "empty",
+          "response_type": "empty",
+          "is_user_response_required": true,
+          "measure": "empty",
+          "scale": "empty",
+          "lower_limits": "empty",
+          "upper_limits": "empty"
+        }
+      ]
+    }
+  },
+  "session_id": "empty",
+  "_meta": {
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "image_analysis_time": "3.995s",
+    "db_retrieval_time": "5.3ms",
+    "env": "demo",
+    "debug_info": {
+      "appliance_type_extracted": "Power Tools",
+      "protection_class_extracted": "Protection Class III",
+      "protection_class_numeric": 3,
+      "tests_found": true,
+      "retry_attempts": 1
+    }
+  }
+}
