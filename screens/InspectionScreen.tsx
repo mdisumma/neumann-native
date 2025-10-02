@@ -14,6 +14,8 @@ import {
   InspectionHeader,
   VisualInspection,
 } from "../components/inspection";
+
+// Import the global inspection context
 import { InspectionContext } from "../context/InspectionContext";
 
 // Define the navigation prop type for this screen
@@ -77,10 +79,6 @@ export default function InspectionScreen({ navigation }: Props) {
         }
         key={inspectionData?.tests?.visual_inspection?.display_order || 1}
         onAnswerChange={(questionId, answer) => {
-          console.log(`📝 User answered Question ${questionId}: ${answer}`);
-
-          // 🎯 MAIN LOGIC: Store user response directly in inspection data
-
           // Step 1: Check if visual inspection data structure exists
           if (inspectionData?.tests?.visual_inspection?.items) {
             // Step 2: Find the specific question by its execution_order
@@ -93,10 +91,6 @@ export default function InspectionScreen({ navigation }: Props) {
             if (questionItem) {
               // Direct update: Add user_response field to the question
               questionItem.user_response = answer;
-
-              console.log(
-                `💾 Saved to inspection data: Question ${questionId} = ${answer}`
-              );
 
               // Step 4: Trigger React re-render by updating context
               // This creates a new object reference so React knows to update
@@ -135,12 +129,6 @@ export default function InspectionScreen({ navigation }: Props) {
         }
         key={inspectionData?.tests?.functional_inspection?.display_order || 3}
         onAnswerChange={(questionId, answer) => {
-          console.log(
-            `📝 User answered Functional Question ${questionId}: ${answer}`
-          );
-
-          // 🎯 MAIN LOGIC: Store user response directly in inspection data
-
           // Step 1: Check if functional inspection data structure exists
           if (inspectionData?.tests?.functional_inspection?.items) {
             // Step 2: Find the specific question by its execution_order
@@ -153,10 +141,6 @@ export default function InspectionScreen({ navigation }: Props) {
             if (questionItem) {
               // Direct update: Add user_response field to the question
               questionItem.user_response = answer;
-
-              console.log(
-                `💾 Saved to inspection data: Functional Question ${questionId} = ${answer}`
-              );
 
               // Step 4: Trigger React re-render by updating context
               // This creates a new object reference so React knows to update
@@ -172,9 +156,6 @@ export default function InspectionScreen({ navigation }: Props) {
             title="Inspection Result"
             color="#F4F8FC"
             onPress={() => {
-              console.log(
-                "📋 User finished inspection - navigating to results"
-              );
               navigation.navigate("Result");
             }}
           />
