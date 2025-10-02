@@ -46,28 +46,28 @@ export default function InspectionScreen({ navigation }: Props) {
     <ScrollView contentContainerStyle={styles.container}>
       <InspectionHeader
         inspectionClass={
-          inspectionData.appliance_classification?.protection_class ?? ""
+          inspectionData?.appliance_classification?.protection_class ?? ""
         }
-        identifier={inspectionData.session_id}
+        identifier={inspectionData?.session_id || ""}
         image={"any-url.com/image.jpg"}
       />
 
       <DeviceInfo
         section={"Device Information"}
-        device={inspectionData.device}
-        model={inspectionData.technical_data.model_number}
-        voltage={inspectionData.technical_data.voltage}
-        serialNumber={inspectionData.technical_data.serial_number}
+        device={inspectionData?.device || ""}
+        model={inspectionData?.technical_data?.model_number || ""}
+        voltage={inspectionData?.technical_data?.voltage || ""}
+        serialNumber={inspectionData?.technical_data?.serial_number || ""}
       />
 
       <VisualInspection
-        questions={inspectionData.tests.visual_inspection.items}
-        key={inspectionData.tests.visual_inspection.display_order}
+        questions={inspectionData?.tests?.visual_inspection?.items || []}
+        key={inspectionData?.tests?.visual_inspection?.display_order || 1}
       />
 
       <ElectricalSafety
-        questions={inspectionData.tests.electrical_inspection.items}
-        key={inspectionData.tests.electrical_inspection.display_order}
+        questions={inspectionData?.tests?.electrical_inspection?.items || []}
+        key={inspectionData?.tests?.electrical_inspection?.display_order || 2}
         isMeasured={isMeasured}
         onMeasurePress={() => {
           console.log("🔌 User pressed Measure button");
@@ -76,8 +76,8 @@ export default function InspectionScreen({ navigation }: Props) {
       />
 
       <FunctionalTest
-        questions={inspectionData.tests.functional_inspection.items}
-        key={inspectionData.tests.functional_inspection.display_order}
+        questions={inspectionData?.tests?.functional_inspection?.items || []}
+        key={inspectionData?.tests?.functional_inspection?.display_order || 3}
       />
 
       <View style={styles.buttonWrapper}>
