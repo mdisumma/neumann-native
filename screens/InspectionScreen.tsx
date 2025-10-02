@@ -47,51 +47,8 @@ export default function InspectionScreen({ navigation }: Props) {
   // Get inspection data from React Context (shared state across the app)
   const { inspectionData, setInspectionData } = useContext(InspectionContext);
 
-  // Function to get all user responses for visual inspection
-  const getVisualInspectionResponses = () => {
-    const responses: Record<string | number, "yes" | "no" | null> = {};
-    inspectionData?.tests?.visual_inspection?.items?.forEach(
-      (item: InspectionItem) => {
-        if (item.user_response !== undefined) {
-          responses[item.execution_order] = item.user_response;
-        }
-      }
-    );
-    return responses;
-  };
-
-  // Function to get all user responses for functional test
-  const getFunctionalTestResponses = () => {
-    const responses: Record<string | number, "yes" | "no" | null> = {};
-    inspectionData?.tests?.functional_inspection?.items?.forEach(
-      (item: InspectionItem) => {
-        if (item.user_response !== undefined) {
-          responses[item.execution_order] = item.user_response;
-        }
-      }
-    );
-    return responses;
-  };
-
   useEffect(() => {
     console.log(JSON.stringify(inspectionData, null, 2));
-
-    // Log user responses whenever inspection data changes
-    const visualResponses = getVisualInspectionResponses();
-    if (Object.keys(visualResponses).length > 0) {
-      console.log(
-        "📋 Current Visual Inspection User Responses:",
-        visualResponses
-      );
-    }
-
-    const functionalResponses = getFunctionalTestResponses();
-    if (Object.keys(functionalResponses).length > 0) {
-      console.log(
-        "🔧 Current Functional Test User Responses:",
-        functionalResponses
-      );
-    }
   }, [inspectionData]); // Watch for changes in inspection data
 
   return (
