@@ -3,9 +3,16 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface VisualInspectionProps {
   questions: { execution_order: string | number; name: string }[];
+  onAnswerChange?: (
+    questionId: string | number,
+    answer: "yes" | "no" | null
+  ) => void;
 }
 
-export default function VisualInspection({ questions }: VisualInspectionProps) {
+export default function VisualInspection({
+  questions,
+  onAnswerChange,
+}: VisualInspectionProps) {
   // State to track answers for each question
   // Example: { "1": "yes", "2": "no", "3": null }
   const [answers, setAnswers] = useState<Record<string, "yes" | "no" | null>>(
@@ -31,31 +38,30 @@ export default function VisualInspection({ questions }: VisualInspectionProps) {
       const currentAnswer = prevAnswers[questionId];
       // Example: if questionId is "2", then currentAnswer = null
 
+      let newAnswer: "yes" | "no" | null;
+
       // SCENARIO 1: User clicked the SAME button that's already selected
       // Example: question 1 is "yes", user clicks "yes" again
       if (currentAnswer === buttonType) {
         // We want to REMOVE the selection (toggle it off)
-        // { ...prevAnswers } = copy everything from current state
-        // [questionId]: null = change just THIS question to null (unselected)
-        return { ...prevAnswers, [questionId]: null };
-
-        // Example result: { "1": null, "2": null, "3": "no" }
+        newAnswer = null;
       }
-
       // SCENARIO 2: User clicked a DIFFERENT button (or no button was selected)
       // Example: question 1 was "yes", user clicks "no"
       // OR: question 2 was null, user clicks "yes"
       else {
         // We want to SELECT the new button
-        // { ...prevAnswers } = copy everything from current state
-        // [questionId]: buttonType = change just THIS question to the new selection
-        return { ...prevAnswers, [questionId]: buttonType };
-
-        // Example result: { "1": "no", "2": null, "3": "no" }
+        newAnswer = buttonType;
       }
 
-      // Whatever we RETURN becomes the new state
-      // React will then re-draw the component with the new state
+      // Call the callback function if provided
+      // This allows the parent component (InspectionScreen) to know about the answer change
+      if (onAnswerChange) {
+        onAnswerChange(questionId, newAnswer);
+      }
+
+      // Return the new state
+      return { ...prevAnswers, [questionId]: newAnswer };
     });
   };
 

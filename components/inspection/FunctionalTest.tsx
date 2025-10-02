@@ -3,9 +3,16 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface FunctionalTestProps {
   questions: { execution_order: string | number; name: string }[];
+  onAnswerChange?: (
+    questionId: string | number,
+    answer: "yes" | "no" | null
+  ) => void;
 }
 
-export default function FunctionalTest({ questions }: FunctionalTestProps) {
+export default function FunctionalTest({
+  questions,
+  onAnswerChange,
+}: FunctionalTestProps) {
   // State to track answers for each question
   // Example: { "1": "yes", "2": "no", "3": null }
   const [answers, setAnswers] = useState<Record<string, "yes" | "no" | null>>(
@@ -19,15 +26,23 @@ export default function FunctionalTest({ questions }: FunctionalTestProps) {
   ) => {
     setAnswers((prevAnswers) => {
       const currentAnswer = prevAnswers[questionId];
+      let newAnswer: "yes" | "no" | null;
 
       // If same button is clicked, remove selection (toggle off)
       if (currentAnswer === buttonType) {
-        return { ...prevAnswers, [questionId]: null };
+        newAnswer = null;
       }
       // Otherwise, select the new button (this automatically deselects the other)
       else {
-        return { ...prevAnswers, [questionId]: buttonType };
+        newAnswer = buttonType;
       }
+
+      // Call the callback to notify parent component of answer change
+      if (onAnswerChange) {
+        onAnswerChange(questionId, newAnswer);
+      }
+
+      return { ...prevAnswers, [questionId]: newAnswer };
     });
   };
 

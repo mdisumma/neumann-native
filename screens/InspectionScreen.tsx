@@ -27,6 +27,15 @@ interface Props {
   navigation: InspectionScreenNavigationProp;
 }
 
+// Define the inspection item interface for type safety
+interface InspectionItem {
+  execution_order: string | number;
+  name: string;
+  description?: string;
+  user_response?: "yes" | "no" | null;
+  [key: string]: any; // Allow additional properties
+}
+
 // MAIN COMPONENT
 
 export default function InspectionScreen({ navigation }: Props) {
@@ -38,9 +47,52 @@ export default function InspectionScreen({ navigation }: Props) {
   // Get inspection data from React Context (shared state across the app)
   const { inspectionData, setInspectionData } = useContext(InspectionContext);
 
+  // Function to get all user responses for visual inspection
+  const getVisualInspectionResponses = () => {
+    const responses: Record<string | number, "yes" | "no" | null> = {};
+    inspectionData?.tests?.visual_inspection?.items?.forEach(
+      (item: InspectionItem) => {
+        if (item.user_response !== undefined) {
+          responses[item.execution_order] = item.user_response;
+        }
+      }
+    );
+    return responses;
+  };
+
+  // Function to get all user responses for functional test
+  const getFunctionalTestResponses = () => {
+    const responses: Record<string | number, "yes" | "no" | null> = {};
+    inspectionData?.tests?.functional_inspection?.items?.forEach(
+      (item: InspectionItem) => {
+        if (item.user_response !== undefined) {
+          responses[item.execution_order] = item.user_response;
+        }
+      }
+    );
+    return responses;
+  };
+
   useEffect(() => {
     console.log(JSON.stringify(inspectionData, null, 2));
-  }, []); // Empty dependency array = only run once when component mounts
+
+    // Log user responses whenever inspection data changes
+    const visualResponses = getVisualInspectionResponses();
+    if (Object.keys(visualResponses).length > 0) {
+      console.log(
+        "📋 Current Visual Inspection User Responses:",
+        visualResponses
+      );
+    }
+
+    const functionalResponses = getFunctionalTestResponses();
+    if (Object.keys(functionalResponses).length > 0) {
+      console.log(
+        "🔧 Current Functional Test User Responses:",
+        functionalResponses
+      );
+    }
+  }, [inspectionData]); // Watch for changes in inspection data
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -67,6 +119,34 @@ export default function InspectionScreen({ navigation }: Props) {
           ]
         }
         key={inspectionData?.tests?.visual_inspection?.display_order || 1}
+        onAnswerChange={(questionId, answer) => {
+          console.log(`📝 User answered Question ${questionId}: ${answer}`);
+
+          // 🎯 MAIN LOGIC: Store user response directly in inspection data
+
+          // Step 1: Check if visual inspection data structure exists
+          if (inspectionData?.tests?.visual_inspection?.items) {
+            // Step 2: Find the specific question by its execution_order
+            const questionItem =
+              inspectionData.tests.visual_inspection.items.find(
+                (item: InspectionItem) => item.execution_order === questionId
+              );
+
+            // Step 3: If question exists, update it with user's answer
+            if (questionItem) {
+              // Direct update: Add user_response field to the question
+              questionItem.user_response = answer;
+
+              console.log(
+                `💾 Saved to inspection data: Question ${questionId} = ${answer}`
+              );
+
+              // Step 4: Trigger React re-render by updating context
+              // This creates a new object reference so React knows to update
+              setInspectionData({ ...inspectionData });
+            }
+          }
+        }}
       />
 
       <ElectricalSafety
@@ -97,6 +177,36 @@ export default function InspectionScreen({ navigation }: Props) {
           ]
         }
         key={inspectionData?.tests?.functional_inspection?.display_order || 3}
+        onAnswerChange={(questionId, answer) => {
+          console.log(
+            `📝 User answered Functional Question ${questionId}: ${answer}`
+          );
+
+          // 🎯 MAIN LOGIC: Store user response directly in inspection data
+
+          // Step 1: Check if functional inspection data structure exists
+          if (inspectionData?.tests?.functional_inspection?.items) {
+            // Step 2: Find the specific question by its execution_order
+            const questionItem =
+              inspectionData.tests.functional_inspection.items.find(
+                (item: InspectionItem) => item.execution_order === questionId
+              );
+
+            // Step 3: If question exists, update it with user's answer
+            if (questionItem) {
+              // Direct update: Add user_response field to the question
+              questionItem.user_response = answer;
+
+              console.log(
+                `💾 Saved to inspection data: Functional Question ${questionId} = ${answer}`
+              );
+
+              // Step 4: Trigger React re-render by updating context
+              // This creates a new object reference so React knows to update
+              setInspectionData({ ...inspectionData });
+            }
+          }
+        }}
       />
 
       <View style={styles.buttonWrapper}>
