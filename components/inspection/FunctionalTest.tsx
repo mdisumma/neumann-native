@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface FunctionalTestProps {
@@ -6,25 +6,93 @@ interface FunctionalTestProps {
 }
 
 export default function FunctionalTest({ questions }: FunctionalTestProps) {
+  // State to track answers for each question
+  // Example: { "1": "yes", "2": "no", "3": null }
+  const [answers, setAnswers] = useState<Record<string, "yes" | "no" | null>>(
+    {}
+  );
+
+  // Handle button press for Yes/No buttons
+  const handleButtonPress = (
+    questionId: string | number,
+    buttonType: "yes" | "no"
+  ) => {
+    setAnswers((prevAnswers) => {
+      const currentAnswer = prevAnswers[questionId];
+
+      // If same button is clicked, remove selection (toggle off)
+      if (currentAnswer === buttonType) {
+        return { ...prevAnswers, [questionId]: null };
+      }
+      // Otherwise, select the new button (this automatically deselects the other)
+      else {
+        return { ...prevAnswers, [questionId]: buttonType };
+      }
+    });
+  };
+
   return (
     <View style={styles.responseBox}>
       <Text style={styles.sectionTitle}>Functional Test</Text>
 
-      {questions.map((question) => (
-        <View key={question.execution_order} style={styles.questionContainer}>
-          <Text style={styles.questionText}>{question.name}</Text>
+      {questions.map((question) => {
+        // Get current answer for this question
+        const currentAnswer = answers[question.execution_order];
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.buttonLeft]}>
-              <Text style={styles.buttonText}>Yes</Text>
-            </TouchableOpacity>
+        return (
+          <View key={question.execution_order} style={styles.questionContainer}>
+            <Text style={styles.questionText}>{question.name}</Text>
 
-            <TouchableOpacity style={[styles.button, styles.buttonRight]}>
-              <Text style={styles.buttonText}>No</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              {/* YES BUTTON */}
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  styles.buttonLeft,
+                  // Apply selected style if "yes" is chosen
+                  currentAnswer === "yes" && styles.selectedButton,
+                ]}
+                onPress={() =>
+                  handleButtonPress(question.execution_order, "yes")
+                }
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    // Apply selected text style if "yes" is chosen
+                    currentAnswer === "yes" && styles.selectedText,
+                  ]}
+                >
+                  Yes
+                </Text>
+              </TouchableOpacity>
+
+              {/* NO BUTTON */}
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  styles.buttonRight,
+                  // Apply selected style if "no" is chosen
+                  currentAnswer === "no" && styles.selectedButton,
+                ]}
+                onPress={() =>
+                  handleButtonPress(question.execution_order, "no")
+                }
+              >
+                <Text
+                  style={[
+                    styles.buttonText,
+                    // Apply selected text style if "no" is chosen
+                    currentAnswer === "no" && styles.selectedText,
+                  ]}
+                >
+                  No
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      ))}
+        );
+      })}
     </View>
   );
 }
@@ -76,5 +144,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#142C44",
     fontSize: 16,
+  },
+  // Selected button styles (when clicked)
+  selectedButton: {
+    backgroundColor: "#142C44", // Dark blue background when selected
+  },
+  selectedText: {
+    color: "#FFFFFF", // White text when selected
   },
 });

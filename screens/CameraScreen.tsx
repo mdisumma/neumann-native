@@ -110,6 +110,11 @@ export default function CameraScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Button title="Take a Photo" onPress={takePhoto} disabled={loading} />
+      <Button
+        title="Go to Inspection"
+        onPress={() => navigation.navigate("Inspection")}
+        disabled={loading}
+      />
 
       {loading && (
         <Text style={styles.loadingText}>🤖 Analyzing photo with AI...</Text>
