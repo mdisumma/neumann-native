@@ -15,9 +15,12 @@ interface Props {
 
 export default function ResultScreen({ navigation }: Props) {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+    >
       <View style={styles.contentContainer}>
-        <View>
+        <View style={styles.statusSection}>
           <ResultStatus resultTitle="Visual Inspection" resultStatus="Passed" />
           <ResultStatus
             resultTitle="Electrical Safety Test"
@@ -51,25 +54,39 @@ export default function ResultScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
-    color: "#333",
+    paddingBottom: 32,
+  },
+  scrollContent: {
+    flexGrow: 1,
     padding: 16,
     paddingTop: 32,
   },
   contentContainer: {
     flex: 1,
-    flexDirection: "column",
     justifyContent: "space-between",
-    minHeight: "100%",
+    minHeight: 500, // Use fixed minimum height instead of percentage
+  },
+  statusSection: {
+    flex: 1,
+    gap: 16, // Consistent spacing between status items
   },
   buttonContainer: {
-    marginBottom: 32,
+    marginTop: 32,
     gap: 16,
   },
   button: {
     backgroundColor: "#142C44",
-    width: "100%",
     borderRadius: 16,
     overflow: "hidden",
+    elevation: 2, // Android shadow
+    shadowColor: "#000", // iOS shadow
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
 });
