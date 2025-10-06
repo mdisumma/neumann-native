@@ -9,6 +9,7 @@ import { RootStackParamList } from "./types/navigation";
 import CameraScreen from "./screens/CameraScreen";
 import HomeScreen from "./screens/HomeScreen";
 import InspectionScreen from "./screens/InspectionScreen";
+import LinkedScreen from "./screens/LinkedScreen";
 import ResultScreen from "./screens/ResultScreen";
 
 // Import the context provider
@@ -23,7 +24,7 @@ export default function App() {
         <NavigationContainer>
           <StatusBar style="auto" />
           <Stack.Navigator
-            initialRouteName="Result"
+            initialRouteName="Home"
             screenOptions={{
               headerStyle: { backgroundColor: "#6B7C93" },
               headerTintColor: "#F4F8FC",
@@ -52,6 +53,13 @@ export default function App() {
               name="Result"
               component={ResultScreen}
               options={{ title: "Inspection Result" }}
+            />
+            <Stack.Screen
+              name="Linked"
+              component={LinkedScreen}
+              options={{
+                title: "Link Label",
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>
