@@ -11,6 +11,7 @@ import HomeScreen from "./screens/HomeScreen";
 import InspectionScreen from "./screens/InspectionScreen";
 import LinkedScreen from "./screens/LinkedScreen";
 import ResultScreen from "./screens/ResultScreen";
+import SavedScreen from "./screens/SavedScreen";
 
 // Import the context provider
 import { InspectionProvider } from "./context/InspectionContext";
@@ -52,13 +53,20 @@ export default function App() {
             <Stack.Screen
               name="Result"
               component={ResultScreen}
-              options={{ title: "Inspection Result" }}
+              options={{ title: "Result" }}
             />
             <Stack.Screen
               name="Linked"
               component={LinkedScreen}
               options={{
                 title: "Link Label",
+              }}
+            />
+            <Stack.Screen
+              name="Saved"
+              component={SavedScreen}
+              options={{
+                title: "Saved",
               }}
             />
           </Stack.Navigator>

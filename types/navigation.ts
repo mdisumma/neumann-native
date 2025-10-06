@@ -4,4 +4,5 @@ export type RootStackParamList = {
   Inspection: undefined;
   Result: undefined;
   Linked: undefined;
+  Saved: undefined;
 };

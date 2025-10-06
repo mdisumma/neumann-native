@@ -37,7 +37,6 @@ export default function ResultScreen({ navigation }: Props) {
               title="Add label"
               color="#F4F8FC"
               onPress={() => {
-                console.log("Add label button pressed");
                 navigation.navigate("Linked");
               }}
             />
@@ -46,7 +45,9 @@ export default function ResultScreen({ navigation }: Props) {
             <Button
               title="Save Inspection"
               color="#F4F8FC"
-              onPress={() => console.log("Save Inspection button pressed")}
+              onPress={() => {
+                navigation.navigate("Saved");
+              }}
             />
           </View>
         </View>
