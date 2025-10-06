@@ -1,7 +1,8 @@
+import ResultStatus from "@/components/inspection/result/ResultStatus";
 import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 type ResultScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -14,10 +15,21 @@ interface Props {
 
 export default function ResultScreen({ navigation }: Props) {
   return (
-    <View>
-      <Text>Result Screen</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      <ResultStatus resultTitle="Visual Inspection" resultStatus="Passed" />
+      <ResultStatus
+        resultTitle="Electrical Safety Test"
+        resultStatus="Passed"
+      />
+      <ResultStatus resultTitle="Functional Inspection" resultStatus="Passed" />
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#fff",
+    color: "#333",
+    padding: 24,
+  },
+});

@@ -6,5 +6,10 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "context/InspectionContext.js"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "context/InspectionContext.js",
+    "declarations.d.ts"
+  ]
 }
