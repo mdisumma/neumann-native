@@ -1,7 +1,7 @@
 // Camera Screen: Take photo → AI analysis → Store in global context
 
 // React & React Native
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 
 // Navigation
@@ -12,7 +12,7 @@ import { RootStackParamList } from "../types/navigation";
 import * as ImagePicker from "expo-image-picker";
 
 // Internal
-import { InspectionContext } from "../context/InspectionContext";
+import { useImageContext } from "../context/ImageContext";
 
 // Types
 type CameraScreenNavigationProp = StackNavigationProp<
@@ -25,16 +25,8 @@ interface Props {
 }
 
 export default function CameraScreen({ navigation }: Props) {
-  const { inspectionData, setInspectionData } = useContext(InspectionContext);
+  const { setCapturedImage, setAnalysisResult } = useImageContext();
   const [loading, setLoading] = useState(false);
-
-  // Monitor global data changes
-  // useEffect(() => {
-  //   if (Object.keys(inspectionData || {}).length > 0) {
-  //     console.log("🌍 Global inspection data updated:");
-  //     console.log(JSON.stringify(inspectionData, null, 2));
-  //   }
-  // }, [inspectionData]);
 
   // Handle camera capture and permissions
   const takePhoto = async () => {
@@ -53,7 +45,14 @@ export default function CameraScreen({ navigation }: Props) {
 
     if (!result.canceled) {
       const photo = result.assets[0];
-      console.log("📸 Photo captured, starting AI analysis...");
+
+      // Store the captured image in ImageContext
+      setCapturedImage({
+        uri: photo.uri,
+        base64: photo.base64 || undefined,
+        timestamp: new Date().toISOString(),
+      });
+
       await analyzePhotoWithAI(photo);
     }
   };
@@ -84,24 +83,22 @@ export default function CameraScreen({ navigation }: Props) {
       );
 
       const analysisResult = await response.json();
-      console.log("✅ AI analysis received:");
-      console.log(JSON.stringify(analysisResult, null, 2));
 
-      // Store in global context
-      setInspectionData(analysisResult);
+      // Store analysis result in ImageContext
+      setAnalysisResult(analysisResult);
 
-      // Redirect to inspection screen on success
+      // Navigate to inspection screen
       navigation.navigate("Inspection");
     } catch (error) {
       console.error("❌ AI analysis error:", error);
 
-      const errorResult = {
-        error: error instanceof Error ? error.message : String(error),
-        timestamp: new Date().toISOString(),
-      };
-
-      setInspectionData(errorResult);
-      // Don't redirect on error, let user see the error state
+      // Show error to user
+      alert(
+        `AI Analysis Error: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
+      // Don't redirect on error, let user try again
     } finally {
       setLoading(false);
     }

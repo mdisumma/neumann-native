@@ -3,7 +3,7 @@ import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 // Import React hooks and components
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
 // Import inspection data and components
@@ -15,8 +15,21 @@ import {
   VisualInspection,
 } from "../components/inspection";
 
-// Import the global inspection context
-import { InspectionContext } from "../context/InspectionContext";
+// Import the global contexts
+import { useImageContext } from "../context/ImageContext";
+import { useInspectionContext } from "../context/InspectionContext";
+
+// Define inspection item type locally to avoid import issues
+type InspectionItem = {
+  execution_order: string | number;
+  name: string;
+  description?: string;
+  measure?: string;
+  lower_limits?: string | number;
+  upper_limits?: string | number;
+  user_response?: "yes" | "no" | null;
+  [key: string]: any;
+};
 
 // Define the navigation prop type for this screen
 type InspectionScreenNavigationProp = StackNavigationProp<
@@ -29,15 +42,6 @@ interface Props {
   navigation: InspectionScreenNavigationProp;
 }
 
-// Define the inspection item interface for type safety
-interface InspectionItem {
-  execution_order: string | number;
-  name: string;
-  description?: string;
-  user_response?: "yes" | "no" | null;
-  [key: string]: any; // Allow additional properties
-}
-
 // MAIN COMPONENT
 
 export default function InspectionScreen({ navigation }: Props) {
@@ -47,11 +51,30 @@ export default function InspectionScreen({ navigation }: Props) {
   const [isMeasured, setIsMeasured] = useState<boolean>(false);
 
   // Get inspection data from React Context (shared state across the app)
-  const { inspectionData, setInspectionData } = useContext(InspectionContext);
+  const { inspectionData, setInspectionData } = useInspectionContext();
+  // Get captured image and analysis result from ImageContext
+  const { capturedImage, analysisResult } = useImageContext();
 
+  // Load analysis result into inspection context when available
   useEffect(() => {
-    console.log(JSON.stringify(inspectionData, null, 2));
-  }, [inspectionData]); // Watch for changes in inspection data
+    if (analysisResult && Object.keys(inspectionData).length === 0) {
+      console.log(
+        "🔄 Loading API data into inspection context:",
+        analysisResult
+      );
+      setInspectionData(analysisResult);
+    }
+  }, [analysisResult, inspectionData, setInspectionData]);
+
+  // Debug log to monitor inspection data changes
+  useEffect(() => {
+    if (Object.keys(inspectionData).length > 0) {
+      console.log(
+        "📊 Current inspection data:",
+        JSON.stringify(inspectionData, null, 2)
+      );
+    }
+  }, [inspectionData]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -60,7 +83,7 @@ export default function InspectionScreen({ navigation }: Props) {
           inspectionData?.appliance_classification?.protection_class ?? "--"
         }
         identifier={inspectionData?.session_id || "--"}
-        image={"any-url.com/image.jpg"}
+        image={capturedImage?.uri}
       />
 
       <DeviceInfo
@@ -92,6 +115,11 @@ export default function InspectionScreen({ navigation }: Props) {
               // Direct update: Add user_response field to the question
               questionItem.user_response = answer;
 
+              // Debug log for visual inspection answer
+              console.log(
+                "📊 Current inspection data:",
+                JSON.stringify(inspectionData, null, 2)
+              );
               // Step 4: Trigger React re-render by updating context
               // This creates a new object reference so React knows to update
               setInspectionData({ ...inspectionData });
@@ -102,7 +130,13 @@ export default function InspectionScreen({ navigation }: Props) {
 
       <ElectricalSafety
         questions={
-          inspectionData?.tests?.electrical_inspection?.items || [
+          inspectionData?.tests?.electrical_inspection?.items?.map((item) => ({
+            ...item,
+            description: item.description || "",
+            measure: item.measure || "",
+            lower_limits: item.lower_limits || 0,
+            upper_limits: item.upper_limits || 0,
+          })) || [
             {
               name: "question",
               execution_order: 1,
@@ -116,7 +150,6 @@ export default function InspectionScreen({ navigation }: Props) {
         key={inspectionData?.tests?.electrical_inspection?.display_order || 2}
         isMeasured={isMeasured}
         onMeasurePress={() => {
-          console.log("🔌 User pressed Measure button");
           setIsMeasured(true);
         }}
       />
@@ -142,6 +175,11 @@ export default function InspectionScreen({ navigation }: Props) {
               // Direct update: Add user_response field to the question
               questionItem.user_response = answer;
 
+              // Debug log for functional test answer
+              console.log(
+                "📊 Current inspection data:",
+                JSON.stringify(inspectionData, null, 2)
+              );
               // Step 4: Trigger React re-render by updating context
               // This creates a new object reference so React knows to update
               setInspectionData({ ...inspectionData });
