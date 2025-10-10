@@ -1,12 +1,8 @@
-// Import navigation types for type safety
-import { RootStackParamList } from "@/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
-
-// Import React hooks and components
 import React, { useEffect, useState } from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
-// Import inspection data and components
+import { RootStackParamList } from "@/types/navigation";
 import {
   DeviceInfo,
   ElectricalSafety,
@@ -14,12 +10,9 @@ import {
   InspectionHeader,
   VisualInspection,
 } from "../components/inspection";
-
-// Import the global contexts
 import { useImageContext } from "../context/ImageContext";
 import { useInspectionContext } from "../context/InspectionContext";
 
-// Define inspection item type locally to avoid import issues
 type InspectionItem = {
   execution_order: string | number;
   name: string;
@@ -31,13 +24,11 @@ type InspectionItem = {
   [key: string]: any;
 };
 
-// Define the navigation prop type for this screen
 type InspectionScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Inspection"
 >;
 
-// Define the props this component receives
 interface Props {
   navigation: InspectionScreenNavigationProp;
 }
@@ -75,6 +66,29 @@ export default function InspectionScreen({ navigation }: Props) {
       );
     }
   }, [inspectionData]);
+
+  // Helper function to handle answer changes
+  const handleAnswerChange = (
+    testType: "visual_inspection" | "functional_inspection",
+    questionId: string | number,
+    answer: "yes" | "no" | null
+  ) => {
+    const testItems = inspectionData?.tests?.[testType]?.items;
+    if (!testItems) return;
+
+    const questionItem = testItems.find(
+      (item: InspectionItem) => item.execution_order === questionId
+    );
+
+    if (questionItem) {
+      questionItem.user_response = answer;
+      console.log(
+        "📊 Current inspection data:",
+        JSON.stringify(inspectionData, null, 2)
+      );
+      setInspectionData({ ...inspectionData });
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

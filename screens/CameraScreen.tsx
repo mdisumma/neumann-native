@@ -1,20 +1,11 @@
-// Camera Screen: Take photo → AI analysis → Store in global context
-
-// React & React Native
-import { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-
-// Navigation
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as ImagePicker from "expo-image-picker";
+import React, { useState } from "react";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
+
+import { useImageContext } from "../context/ImageContext";
 import { RootStackParamList } from "../types/navigation";
 
-// External Libraries
-import * as ImagePicker from "expo-image-picker";
-
-// Internal
-import { useImageContext } from "../context/ImageContext";
-
-// Types
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Camera"
@@ -28,11 +19,10 @@ export default function CameraScreen({ navigation }: Props) {
   const { setCapturedImage, setAnalysisResult } = useImageContext();
   const [loading, setLoading] = useState(false);
 
-  // Handle camera capture and permissions
   const takePhoto = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
     if (!granted) {
-      alert("Camera permission is required!");
+      Alert.alert("Permission Required", "Camera permission is required!");
       return;
     }
 
@@ -40,13 +30,12 @@ export default function CameraScreen({ navigation }: Props) {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-      base64: true, // Required for API
+      base64: true,
     });
 
     if (!result.canceled) {
       const photo = result.assets[0];
 
-      // Store the captured image in ImageContext
       setCapturedImage({
         uri: photo.uri,
         base64: photo.base64 || undefined,
@@ -57,19 +46,15 @@ export default function CameraScreen({ navigation }: Props) {
     }
   };
 
-  // Send photo to AI API and handle response
   const analyzePhotoWithAI = async (photo: ImagePicker.ImagePickerAsset) => {
-    if (!photo.base64) return;
+    if (!photo.base64) {
+      Alert.alert("Error", "No image data available for analysis");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const requestBody = {
-        mime_type: "image/jpeg",
-        image_data_base64: photo.base64,
-      };
-
-      // API call to AI analysis service
       const response = await fetch(
         "https://radon.ironapi.com/v1/plugins/ai_analyze_image",
         {
@@ -78,27 +63,26 @@ export default function CameraScreen({ navigation }: Props) {
             accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            mime_type: "image/jpeg",
+            image_data_base64: photo.base64,
+          }),
         }
       );
 
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
       const analysisResult = await response.json();
-
-      // Store analysis result in ImageContext
       setAnalysisResult(analysisResult);
-
-      // Navigate to inspection screen
       navigation.navigate("Inspection");
     } catch (error) {
       console.error("❌ AI analysis error:", error);
-
-      // Show error to user
-      alert(
-        `AI Analysis Error: ${
-          error instanceof Error ? error.message : String(error)
-        }`
+      Alert.alert(
+        "Analysis Failed",
+        error instanceof Error ? error.message : "Unknown error occurred"
       );
-      // Don't redirect on error, let user try again
     } finally {
       setLoading(false);
     }
@@ -112,7 +96,6 @@ export default function CameraScreen({ navigation }: Props) {
         onPress={() => navigation.navigate("Inspection")}
         disabled={loading}
       />
-
       {loading && (
         <Text style={styles.loadingText}>🤖 Analyzing photo with AI...</Text>
       )}
