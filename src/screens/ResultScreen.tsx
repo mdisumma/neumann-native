@@ -1,8 +1,8 @@
 import ResultStatus from "@/src/components/result/ResultStatus";
-import { RootStackParamList } from "@/src/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
+import { RootStackParamList } from "../types/navigation";
 
 type ResultScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

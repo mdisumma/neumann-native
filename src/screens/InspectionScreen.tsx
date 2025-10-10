@@ -2,7 +2,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
-import { RootStackParamList } from "@/src/types/navigation";
 import {
   DeviceInfo,
   ElectricalSafety,
@@ -12,6 +11,8 @@ import {
 } from "../components/inspection";
 import { useImageContext } from "../context/ImageContext";
 import { useInspectionContext } from "../context/InspectionContext";
+import { RootStackParamList } from "../types/navigation";
+("@/src/types/navigation");
 
 type InspectionItem = {
   execution_order: string | number;

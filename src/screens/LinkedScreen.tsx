@@ -1,7 +1,7 @@
 import LinkedIcon from "@/assets/svg/LinkedIcon";
-import { RootStackParamList } from "@/src/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
+import { RootStackParamList } from "../types/navigation";
 
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 

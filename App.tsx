@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { RootStackParamList } from "./types/navigation";
+import { RootStackParamList } from "./src/types/navigation";
 
 // Import screens
 import CameraScreen from "./src/screens/CameraScreen";

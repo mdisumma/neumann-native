@@ -1,10 +1,8 @@
-import PassIcon from "@/assets/svg/PassIcon";
-
-import { RootStackParamList } from "@/src/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import PassIcon from "../../assets/svg/PassIcon";
+import { RootStackParamList } from "../types/navigation";
 
 type SavedScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
