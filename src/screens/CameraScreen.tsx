@@ -6,8 +6,6 @@ import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { useImageContext } from "../context/ImageContext";
 import { RootStackParamList } from "../types/navigation";
 
-import { v4 as uuidv4 } from "react-native-uuid";
-
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Camera"
@@ -39,7 +37,7 @@ export default function CameraScreen({ navigation }: Props) {
       const photo = result.assets[0];
 
       setCapturedImage({
-        id: uuidv4(),
+        // id: uuidv4(),
         uri: photo.uri,
         base64: photo.base64 || undefined,
         timestamp: new Date().toISOString(),

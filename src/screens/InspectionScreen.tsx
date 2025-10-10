@@ -2,7 +2,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
-import { RootStackParamList } from "@/types/navigation";
+import { RootStackParamList } from "@/src/types/navigation";
 import {
   DeviceInfo,
   ElectricalSafety,

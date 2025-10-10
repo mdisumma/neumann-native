@@ -19,7 +19,7 @@ export default function InspectionHeader({
     }
 
     // Fallback to local asset if no valid image provided
-    return require("../../assets/images/test.png");
+    return require("../../../assets/images/test.png");
   };
 
   return (

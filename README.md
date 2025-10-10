@@ -1,6 +1,14 @@
 # 🔧 Neumann Native - Equipment Inspection App
 
-A React Native mobile application built with Expo for conducting equipment inspections. This app provides a streamlined interface for performing visual inspections, electrical safety tests, and functional tests on various equipment types.
+A React Native mobile application built with Expo for conducting equipment inspections. This app pro### Development Features
+
+- **Hot Reload** - Instant code changes
+- **TypeScript** - Full type safety with comprehensive interfaces
+- **ESLint** - Code quality and consistency
+- **Modular Architecture** - Easy to maintain and extend
+- **Component Documentation** - Extensive code comments
+- **Asset Management** - Proper relative path handling for images
+- **Error Handling** - Graceful fallbacks and user-friendly alerts streamlined interface for performing visual inspections, electrical safety tests, and functional tests on various equipment types.
 
 ## � Project Overview
 
@@ -32,16 +40,20 @@ This project uses a **modular component-based architecture** for maximum maintai
 ### Component Structure
 
 ```
-components/
-├── inspection/           # Modular inspection components
-│   ├── DeviceInfo.tsx   # Device information form
-│   ├── ElectricalSafety.tsx # Electrical measurements
-│   ├── FunctionalTest.tsx   # Functional test questions
-│   ├── InspectionHeader.tsx # Inspection metadata
-│   ├── QuestionCard.tsx     # Reusable question component
-│   ├── VisualInspection.tsx # Visual inspection questions
-│   ├── YesNoButton.tsx      # Reusable yes/no button
-│   └── index.ts             # Component exports
+src/
+├── components/
+│   └── inspection/           # Modular inspection components
+│       ├── DeviceInfo.tsx   # Device information form
+│       ├── ElectricalSafety.tsx # Electrical measurements
+│       ├── FunctionalTest.tsx   # Functional test questions
+│       ├── InspectionHeader.tsx # Inspection metadata
+│       ├── QuestionCard.tsx     # Reusable question component
+│       ├── VisualInspection.tsx # Visual inspection questions
+│       ├── YesNoButton.tsx      # Reusable yes/no button
+│       └── index.ts             # Component exports
+├── screens/                  # Application screens
+├── context/                  # React Context providers
+└── types/                    # TypeScript type definitions
 ```
 
 ## 🚀 Getting Started
@@ -91,18 +103,28 @@ components/
 
 ```
 neumann-native/
-├── App.tsx                 # Main app component with navigation
-├── screens/               # Screen components
-│   ├── InspectionScreen.tsx  # Main inspection form
-│   └── ...
-├── components/            # Reusable UI components
-│   └── inspection/        # Inspection-specific components
-├── context/              # React Context providers
-│   └── InspectionContext.js # Global inspection state
-├── types/                # TypeScript type definitions
-│   └── navigation.ts     # Navigation types
-├── assets/               # Images and static files
-├── api/                  # API integration (if applicable)
+├── App.tsx                    # Main app component with navigation
+├── src/                       # Source code directory
+│   ├── screens/              # Screen components
+│   │   ├── CameraScreen.tsx  # Photo capture and AI analysis
+│   │   ├── InspectionScreen.tsx # Main inspection form
+│   │   ├── HomeScreen.tsx    # Home/login screen
+│   │   ├── ResultScreen.tsx  # Inspection results
+│   │   └── ...
+│   ├── components/           # Reusable UI components
+│   │   └── inspection/       # Inspection-specific components
+│   │       ├── DeviceInfo.tsx
+│   │       ├── VisualInspection.tsx
+│   │       ├── ElectricalSafety.tsx
+│   │       ├── FunctionalTest.tsx
+│   │       └── ...
+│   ├── context/             # React Context providers
+│   │   ├── ImageContext.tsx # Image capture and AI analysis state
+│   │   └── InspectionContext.tsx # Global inspection state
+│   └── types/               # TypeScript type definitions
+│       └── navigation.ts    # Navigation types
+├── assets/                  # Images and static files
+├── api/                     # API integration (if applicable)
 └── ...config files
 ```
 
@@ -110,23 +132,27 @@ neumann-native/
 
 - **React Native 0.81.4** - Mobile app framework
 - **Expo SDK 54** - Development platform and toolchain
-- **React Navigation 7** - Navigation library
+- **React Navigation 7** - Stack navigation for screen management
 - **TypeScript** - Type safety and better developer experience
-- **React Context API** - State management
-- **Expo Image Picker** - Camera and image selection
-- **React Native Gesture Handler** - Touch interactions
+- **React Context API** - Dual context architecture (Image + Inspection)
+- **Expo Image Picker** - Camera integration and image capture
+- **React Native UUID** - Unique identifier generation for images
+- **AI Integration** - Image analysis and device recognition API
+- **React Native SVG** - SVG image support and display
 
 ## 📋 Features
 
 ### ✅ Current Features
 
 - **Equipment Inspection Form** - Comprehensive inspection workflow
-- **Visual Inspection** - Yes/No questions with photo capture
-- **Electrical Safety Tests** - Measurement input fields
+- **AI-Powered Analysis** - Image analysis with automatic device recognition
+- **Photo Capture** - Camera integration with UUID-based image identification
+- **Visual Inspection** - Interactive Yes/No questions with answer persistence
+- **Electrical Safety Tests** - Measurement input fields with validation
 - **Functional Testing** - Equipment functionality verification
-- **Device Information** - Equipment details and specifications
-- **Photo Integration** - Image capture and selection
-- **State Persistence** - Maintains data across navigation
+- **Device Information** - Auto-populated equipment details from AI analysis
+- **State Management** - Separate contexts for images and inspection data
+- **Real-time Debugging** - Console logging for development and testing
 
 ### 🔄 Development Features
 
@@ -175,15 +201,22 @@ Main orchestrator component that combines all inspection modules:
 
 ### Inspection Components
 
-Modular components in `components/inspection/`:
+Modular components in `src/components/inspection/`:
 
-- **InspectionHeader** - Displays inspection metadata
+- **InspectionHeader** - Displays inspection metadata and captured images
 - **DeviceInfo** - Equipment information form
-- **VisualInspection** - Visual inspection questions
+- **VisualInspection** - Visual inspection questions with Yes/No buttons
 - **ElectricalSafety** - Electrical measurement inputs
 - **FunctionalTest** - Functional test questions
 - **QuestionCard** - Reusable question component
-- **YesNoButton** - Standardized yes/no input
+- **YesNoButton** - Standardized yes/no input with selection states
+
+### Context Management
+
+Global state management in `src/context/`:
+
+- **ImageContext** - Manages captured images and AI analysis results
+- **InspectionContext** - Handles inspection data and user responses
 
 ## 🐛 Debugging
 
@@ -264,7 +297,3 @@ This project has been designed with **junior developer accessibility** in mind:
 - Enhanced debugging with descriptive logging
 
 The codebase prioritizes **maintainability** and **readability** over brevity, making it an excellent learning resource while remaining production-ready.
-
----
-
-_Last updated: September 2025_

@@ -1,32 +1,33 @@
-import LinkedIcon from "@/assets/svg/LinkedIcon";
-import { RootStackParamList } from "@/types/navigation";
+import PassIcon from "@/assets/svg/PassIcon";
+
+import { RootStackParamList } from "@/src/types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 
-type LinkedScreenNavigationProp = StackNavigationProp<
+type SavedScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Linked"
+  "Saved"
 >;
 
 interface Props {
-  navigation: LinkedScreenNavigationProp;
+  navigation: SavedScreenNavigationProp;
 }
 
-export default function LinkedScreen({ navigation }: Props) {
+export default function SavedScreen({ navigation }: Props) {
   return (
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.container}>
         <View style={styles.contentContainer}>
-          <LinkedIcon width={56} height={56} />
-          <Text>Label and Device linked successfully</Text>
+          <PassIcon width={56} height={56} />
+          <Text>Inspection saved successfully</Text>
         </View>
         <View style={styles.button}>
           <Button
-            title="Save Inspection"
+            title="Start new Inspection"
             color="#F4F8FC"
-            onPress={() => console.log("Save Inspection button pressed")}
+            onPress={() => navigation.navigate("Home")}
           />
         </View>
       </View>

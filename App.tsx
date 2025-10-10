@@ -6,16 +6,16 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RootStackParamList } from "./types/navigation";
 
 // Import screens
-import CameraScreen from "./screens/CameraScreen";
-import HomeScreen from "./screens/HomeScreen";
-import InspectionScreen from "./screens/InspectionScreen";
-import LinkedScreen from "./screens/LinkedScreen";
-import ResultScreen from "./screens/ResultScreen";
-import SavedScreen from "./screens/SavedScreen";
+import CameraScreen from "./src/screens/CameraScreen";
+import HomeScreen from "./src/screens/HomeScreen";
+import InspectionScreen from "./src/screens/InspectionScreen";
+import LinkedScreen from "./src/screens/LinkedScreen";
+import ResultScreen from "./src/screens/ResultScreen";
+import SavedScreen from "./src/screens/SavedScreen";
 
 // Import the context providers
-import { ImageProvider } from "./context/ImageContext";
-import { InspectionProvider } from "./context/InspectionContext";
+import { ImageProvider } from "./src/context/ImageContext";
+import { InspectionProvider } from "./src/context/InspectionContext";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
