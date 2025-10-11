@@ -3,6 +3,9 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 
+// ID IMPLEMENTATION *************************************************
+import uuid from "react-native-uuid";
+
 import { useImageContext } from "../context/ImageContext";
 import { RootStackParamList } from "../types/navigation";
 
@@ -19,13 +22,15 @@ export default function CameraScreen({ navigation }: Props) {
   const { setCapturedImage, setAnalysisResult } = useImageContext();
   const [loading, setLoading] = useState(false);
 
-  const takePhoto = async () => {
+  const takePhotoAndAnalyze = async () => {
+    // Request camera permission
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
     if (!granted) {
       Alert.alert("Permission Required", "Camera permission is required!");
       return;
     }
 
+    // Launch camera
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
@@ -33,29 +38,38 @@ export default function CameraScreen({ navigation }: Props) {
       base64: true,
     });
 
-    if (!result.canceled) {
-      const photo = result.assets[0];
+    if (result.canceled || !result.assets[0].base64) return;
 
-      setCapturedImage({
-        // id: uuidv4(),
-        uri: photo.uri,
-        base64: photo.base64 || undefined,
-        timestamp: new Date().toISOString(),
+    const photo = result.assets[0];
+
+    // ID IMPLEMENTATION *************************************************
+    const imageId = uuid.v4() as string; // Generate unique ID
+
+    // Store image in context
+    setCapturedImage({
+      uri: photo.uri,
+      base64: photo.base64 || undefined,
+    });
+
+    // Send to API
+    setLoading(true);
+    try {
+      const requestBody = {
+        mime_type: "image/jpeg",
+        image_data_base64: photo.base64,
+
+        // ID IMPLEMENTATION *************************************************
+        image_id: imageId,
+      };
+
+      // Log what we're sending
+      console.log("🚀 Sending to API:", {
+        // ID IMPLEMENTATION *************************************************
+        imageId,
+        hasBase64: true,
+        base64Length: photo.base64?.length || 0,
       });
 
-      await analyzePhotoWithAI(photo);
-    }
-  };
-
-  const analyzePhotoWithAI = async (photo: ImagePicker.ImagePickerAsset) => {
-    if (!photo.base64) {
-      Alert.alert("Error", "No image data available for analysis");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
       const response = await fetch(
         "https://radon.ironapi.com/v1/plugins/ai_analyze_image",
         {
@@ -64,26 +78,20 @@ export default function CameraScreen({ navigation }: Props) {
             accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            mime_type: "image/jpeg",
-            image_data_base64: photo.base64,
-          }),
+          body: JSON.stringify(requestBody),
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
+      // Success - store result and navigate
       const analysisResult = await response.json();
       setAnalysisResult(analysisResult);
       navigation.navigate("Inspection");
     } catch (error) {
-      console.error("❌ AI analysis error:", error);
-      Alert.alert(
-        "Analysis Failed",
-        error instanceof Error ? error.message : "Unknown error occurred"
-      );
+      // Simple error handling
+      console.error("❌ Analysis failed:", error);
+      Alert.alert("Error", "Failed to analyze image. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -91,7 +99,11 @@ export default function CameraScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Button title="Take a Photo" onPress={takePhoto} disabled={loading} />
+      <Button
+        title="Take Photo & Analyze"
+        onPress={takePhotoAndAnalyze}
+        disabled={loading}
+      />
       <Button
         title="Go to Inspection"
         onPress={() => navigation.navigate("Inspection")}

@@ -2,10 +2,8 @@ import React, { createContext, useState } from "react";
 
 // Define the image data structure
 export interface CapturedImage {
-  // id: string;
   uri: string;
   base64?: string;
-  timestamp: string;
 }
 
 // Define the analysis result structure
