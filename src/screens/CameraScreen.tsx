@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 
 // ID IMPLEMENTATION *************************************************
-import uuid from "react-native-uuid";
+// import uuid from "react-native-uuid";
 
 import { useImageContext } from "../context/ImageContext";
 import { RootStackParamList } from "../types/navigation";
@@ -43,7 +43,7 @@ export default function CameraScreen({ navigation }: Props) {
     const photo = result.assets[0];
 
     // ID IMPLEMENTATION *************************************************
-    const imageId = uuid.v4() as string; // Generate unique ID
+    // const imageId = uuid.v4() as string; // Generate unique ID
 
     // Store image in context
     setCapturedImage({
@@ -59,7 +59,7 @@ export default function CameraScreen({ navigation }: Props) {
         image_data_base64: photo.base64,
 
         // ID IMPLEMENTATION *************************************************
-        image_id: imageId,
+        // image_id: imageId,
       };
 
       console.log(
