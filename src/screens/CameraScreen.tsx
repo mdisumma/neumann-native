@@ -62,13 +62,8 @@ export default function CameraScreen({ navigation }: Props) {
         image_id: imageId,
       };
 
-      // Log what we're sending
-      console.log("🚀 Sending to API:", {
-        // ID IMPLEMENTATION *************************************************
-        imageId,
-        hasBase64: true,
-        base64Length: photo.base64?.length || 0,
-      });
+      // Log exactly what we're sending to the API
+      console.log("🚀 Sending to API:", requestBody);
 
       const response = await fetch(
         "https://radon.ironapi.com/v1/plugins/ai_analyze_image",
