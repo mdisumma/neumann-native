@@ -2,13 +2,10 @@ import { API_AUTHORIZATION, API_PASSWORD, API_URL, API_USER } from "@env";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Alert, Button, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RootStackParamList } from "../types/navigation";
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
-
-interface Props {
-  navigation: HomeScreenNavigationProp;
-}
+type Props = {
+  navigation: StackNavigationProp<any, "Home">;
+};
 
 const HomeScreen = ({ navigation }: Props) => {
   const handleApi = async () => {
@@ -29,8 +26,6 @@ const HomeScreen = ({ navigation }: Props) => {
 
       const data = await response.json();
       console.log("Fetched JWT:", data.jwt);
-
-      // Optional: alert the JWT
       Alert.alert("JWT Fetched", data.jwt);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -42,22 +37,17 @@ const HomeScreen = ({ navigation }: Props) => {
 
   return (
     <SafeAreaView style={styles.screen} edges={["top", "left", "right"]}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>
           Power Tool Inspections Made Simple, Safe, and Smart
         </Text>
       </View>
-
-      {/* Content */}
       <View style={styles.content}>
         <Image
           source={require("../../assets/images/neumann.png")}
           style={styles.image}
         />
       </View>
-
-      {/* Action Button */}
       <View style={styles.buttonWrapper}>
         <View style={styles.button}>
           <Button

@@ -1,16 +1,9 @@
-import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import PassIcon from "../../assets/svg/PassIcon";
-import { RootStackParamList } from "../types/navigation";
-
-type SavedScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Saved"
->;
 
 interface Props {
-  navigation: SavedScreenNavigationProp;
+  navigation: any;
 }
 
 export default function SavedScreen({ navigation }: Props) {
@@ -55,8 +48,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#142C44",
     borderRadius: 16,
     overflow: "hidden",
-    elevation: 2, // Android shadow
-    shadowColor: "#000", // iOS shadow
+    elevation: 2,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,

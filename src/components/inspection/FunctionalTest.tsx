@@ -13,13 +13,10 @@ export default function FunctionalTest({
   questions,
   onAnswerChange,
 }: FunctionalTestProps) {
-  // State to track answers for each question
-  // Example: { "1": "yes", "2": "no", "3": null }
   const [answers, setAnswers] = useState<Record<string, "yes" | "no" | null>>(
     {}
   );
 
-  // Handle button press for Yes/No buttons
   const handleButtonPress = (
     questionId: string | number,
     buttonType: "yes" | "no"
@@ -28,16 +25,12 @@ export default function FunctionalTest({
       const currentAnswer = prevAnswers[questionId];
       let newAnswer: "yes" | "no" | null;
 
-      // If same button is clicked, remove selection (toggle off)
       if (currentAnswer === buttonType) {
         newAnswer = null;
-      }
-      // Otherwise, select the new button (this automatically deselects the other)
-      else {
+      } else {
         newAnswer = buttonType;
       }
 
-      // Call the callback to notify parent component of answer change
       if (onAnswerChange) {
         onAnswerChange(questionId, newAnswer);
       }
@@ -51,7 +44,6 @@ export default function FunctionalTest({
       <Text style={styles.sectionTitle}>Functional Test</Text>
 
       {questions.map((question) => {
-        // Get current answer for this question
         const currentAnswer = answers[question.execution_order];
 
         return (
@@ -59,12 +51,10 @@ export default function FunctionalTest({
             <Text style={styles.questionText}>{question.name}</Text>
 
             <View style={styles.buttonContainer}>
-              {/* YES BUTTON */}
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonLeft,
-                  // Apply selected style if "yes" is chosen
                   currentAnswer === "yes" && styles.selectedButton,
                 ]}
                 onPress={() =>
@@ -74,7 +64,6 @@ export default function FunctionalTest({
                 <Text
                   style={[
                     styles.buttonText,
-                    // Apply selected text style if "yes" is chosen
                     currentAnswer === "yes" && styles.selectedText,
                   ]}
                 >
@@ -82,12 +71,10 @@ export default function FunctionalTest({
                 </Text>
               </TouchableOpacity>
 
-              {/* NO BUTTON */}
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonRight,
-                  // Apply selected style if "no" is chosen
                   currentAnswer === "no" && styles.selectedButton,
                 ]}
                 onPress={() =>
@@ -97,7 +84,6 @@ export default function FunctionalTest({
                 <Text
                   style={[
                     styles.buttonText,
-                    // Apply selected text style if "no" is chosen
                     currentAnswer === "no" && styles.selectedText,
                   ]}
                 >

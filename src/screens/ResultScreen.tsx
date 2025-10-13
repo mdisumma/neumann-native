@@ -1,16 +1,9 @@
 import ResultStatus from "@/src/components/result/ResultStatus";
-import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
-import { RootStackParamList } from "../types/navigation";
-
-type ResultScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Result"
->;
 
 interface Props {
-  navigation: ResultScreenNavigationProp;
+  navigation: any;
 }
 
 export default function ResultScreen({ navigation }: Props) {
@@ -70,11 +63,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     justifyContent: "space-between",
-    minHeight: 500, // Use fixed minimum height instead of percentage
+    minHeight: 500,
   },
   statusSection: {
     flex: 1,
-    gap: 16, // Consistent spacing between status items
+    gap: 16,
   },
   buttonContainer: {
     marginTop: 32,
@@ -84,8 +77,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#142C44",
     borderRadius: 16,
     overflow: "hidden",
-    elevation: 2, // Android shadow
-    shadowColor: "#000", // iOS shadow
+    elevation: 2,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,

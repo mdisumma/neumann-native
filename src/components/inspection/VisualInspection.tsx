@@ -13,54 +13,27 @@ export default function VisualInspection({
   questions,
   onAnswerChange,
 }: VisualInspectionProps) {
-  // State to track answers for each question
-  // Example: { "1": "yes", "2": "no", "3": null }
   const [answers, setAnswers] = useState<Record<string, "yes" | "no" | null>>(
     {}
   );
 
-  // This function runs when user clicks Yes or No button
   const handleButtonPress = (
-    questionId: string | number, // TypeScript: questionId can be text ("1") or number (1)
-    buttonType: "yes" | "no" // TypeScript: buttonType can ONLY be "yes" or "no"
+    questionId: string | number,
+    buttonType: "yes" | "no"
   ) => {
-    // questionId = which question was clicked (example: "1", "2", "3")
-    // buttonType = which button was clicked (example: "yes" or "no")
-
-    // setAnswers is a React function that updates our state
-    // Instead of giving it a new value directly, we give it a FUNCTION
-    // React will call our function and pass the current state as 'prevAnswers'
     setAnswers((prevAnswers) => {
-      // prevAnswers = current state that React just gave us
-      // Example: { "1": "yes", "2": null, "3": "no" }
-
-      // Look up what the current answer is for THIS specific question
       const currentAnswer = prevAnswers[questionId];
-      // Example: if questionId is "2", then currentAnswer = null
-
       let newAnswer: "yes" | "no" | null;
-
-      // SCENARIO 1: User clicked the SAME button that's already selected
-      // Example: question 1 is "yes", user clicks "yes" again
       if (currentAnswer === buttonType) {
-        // We want to REMOVE the selection (toggle it off)
         newAnswer = null;
-      }
-      // SCENARIO 2: User clicked a DIFFERENT button (or no button was selected)
-      // Example: question 1 was "yes", user clicks "no"
-      // OR: question 2 was null, user clicks "yes"
-      else {
-        // We want to SELECT the new button
+      } else {
         newAnswer = buttonType;
       }
 
-      // Call the callback function if provided
-      // This allows the parent component (InspectionScreen) to know about the answer change
       if (onAnswerChange) {
         onAnswerChange(questionId, newAnswer);
       }
 
-      // Return the new state
       return { ...prevAnswers, [questionId]: newAnswer };
     });
   };
@@ -70,7 +43,6 @@ export default function VisualInspection({
       <Text style={styles.sectionTitle}>Visual Inspection</Text>
 
       {questions.map((question) => {
-        // Get current answer for this question
         const currentAnswer = answers[question.execution_order];
 
         return (
@@ -78,12 +50,10 @@ export default function VisualInspection({
             <Text style={styles.questionText}>{question.name}</Text>
 
             <View style={styles.buttonContainer}>
-              {/* YES BUTTON */}
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonLeft,
-                  // Apply selected style if "yes" is chosen
                   currentAnswer === "yes" && styles.selectedButton,
                 ]}
                 onPress={() =>
@@ -93,7 +63,6 @@ export default function VisualInspection({
                 <Text
                   style={[
                     styles.buttonText,
-                    // Apply selected text style if "yes" is chosen
                     currentAnswer === "yes" && styles.selectedText,
                   ]}
                 >
@@ -101,12 +70,10 @@ export default function VisualInspection({
                 </Text>
               </TouchableOpacity>
 
-              {/* NO BUTTON */}
               <TouchableOpacity
                 style={[
                   styles.button,
                   styles.buttonRight,
-                  // Apply selected style if "no" is chosen
                   currentAnswer === "no" && styles.selectedButton,
                 ]}
                 onPress={() =>
@@ -116,7 +83,6 @@ export default function VisualInspection({
                 <Text
                   style={[
                     styles.buttonText,
-                    // Apply selected text style if "no" is chosen
                     currentAnswer === "no" && styles.selectedText,
                   ]}
                 >

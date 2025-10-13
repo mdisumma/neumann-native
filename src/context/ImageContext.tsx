@@ -1,32 +1,38 @@
 import React, { createContext, useState } from "react";
 
-// Define the image data structure
-export interface CapturedImage {
+// Minimal types
+export type CapturedImage = {
   uri: string;
   base64?: string;
-}
+};
 
-// Define the analysis result structure
-export interface AnalysisResult {
-  [key: string]: any; // Flexible for API response
-}
+export type InspectionItem = {
+  execution_order: any;
+  name: string;
+  user_response?: "yes" | "no" | null;
+  [key: string]: any;
+};
 
-// Define the context interface
-export interface ImageContextType {
+export type AnalysisResult = {
+  [key: string]: any; // Generic object for API responses
+};
+
+type ImageContextType = {
   capturedImage: CapturedImage | null;
   analysisResult: AnalysisResult | null;
   setCapturedImage: (image: CapturedImage | null) => void;
   setAnalysisResult: (result: AnalysisResult | null) => void;
+  updateAnalysisResult: (updatedData: AnalysisResult) => void;
   clearImage: () => void;
   clearAll: () => void;
-}
+};
 
-// Create the context
+// Create context
 export const ImageContext = createContext<ImageContextType | undefined>(
   undefined
 );
 
-// Create the provider component
+// Provider component
 export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
   const [capturedImage, setCapturedImage] = useState<CapturedImage | null>(
     null
@@ -35,13 +41,17 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
     null
   );
 
-  const clearImage = () => {
-    setCapturedImage(null);
-  };
-
+  const clearImage = () => setCapturedImage(null);
   const clearAll = () => {
     setCapturedImage(null);
     setAnalysisResult(null);
+  };
+  const updateAnalysisResult = (updatedData: AnalysisResult) => {
+    console.log(
+      "📊 Current inspection data:",
+      JSON.stringify(updatedData, null, 2)
+    );
+    setAnalysisResult(updatedData);
   };
 
   return (
@@ -51,6 +61,7 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
         analysisResult,
         setCapturedImage,
         setAnalysisResult,
+        updateAnalysisResult,
         clearImage,
         clearAll,
       }}
@@ -60,11 +71,10 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Custom hook for easier usage
+// Hook
 export const useImageContext = () => {
   const context = React.useContext(ImageContext);
-  if (context === undefined) {
+  if (!context)
     throw new Error("useImageContext must be used within an ImageProvider");
-  }
   return context;
 };

@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 interface InspectionHeaderProps {
   inspectionClass: string;
   identifier: string;
-  image?: string | null; // Image URI (network URL, file URI, or null for fallback)
+  image?: string | null;
 }
 
 export default function InspectionHeader({
@@ -13,12 +13,9 @@ export default function InspectionHeader({
   image,
 }: InspectionHeaderProps) {
   const getImageSource = () => {
-    // Return URI object for any valid image source
     if (image && image.includes("://")) {
       return { uri: image };
     }
-
-    // Fallback to local asset if no valid image provided
     return require("../../../assets/images/test.png");
   };
 

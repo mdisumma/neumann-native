@@ -1,17 +1,9 @@
 import LinkedIcon from "@/assets/svg/LinkedIcon";
-import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { RootStackParamList } from "../types/navigation";
-
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 
-type LinkedScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Linked"
->;
-
 interface Props {
-  navigation: LinkedScreenNavigationProp;
+  navigation: any;
 }
 
 export default function LinkedScreen({ navigation }: Props) {
@@ -56,8 +48,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#142C44",
     borderRadius: 16,
     overflow: "hidden",
-    elevation: 2, // Android shadow
-    shadowColor: "#000", // iOS shadow
+    elevation: 2,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
