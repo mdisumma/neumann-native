@@ -12,7 +12,6 @@ import {
 import { useImageContext } from "../context/ImageContext";
 import { useInspectionContext } from "../context/InspectionContext";
 import { RootStackParamList } from "../types/navigation";
-("@/src/types/navigation");
 
 type InspectionItem = {
   execution_order: string | number;
@@ -68,27 +67,13 @@ export default function InspectionScreen({ navigation }: Props) {
     }
   }, [inspectionData]);
 
-  // Helper function to handle answer changes
-  const handleAnswerChange = (
-    testType: "visual_inspection" | "functional_inspection",
-    questionId: string | number,
-    answer: "yes" | "no" | null
-  ) => {
-    const testItems = inspectionData?.tests?.[testType]?.items;
-    if (!testItems) return;
-
-    const questionItem = testItems.find(
-      (item: InspectionItem) => item.execution_order === questionId
+  // Helper function to log and update inspection data (reduces code duplication)
+  const updateInspectionData = (updatedData: any) => {
+    console.log(
+      "📊 Current inspection data:",
+      JSON.stringify(updatedData, null, 2)
     );
-
-    if (questionItem) {
-      questionItem.user_response = answer;
-      console.log(
-        "📊 Current inspection data:",
-        JSON.stringify(inspectionData, null, 2)
-      );
-      setInspectionData({ ...inspectionData });
-    }
+    setInspectionData(updatedData);
   };
 
   return (
@@ -129,15 +114,8 @@ export default function InspectionScreen({ navigation }: Props) {
             if (questionItem) {
               // Direct update: Add user_response field to the question
               questionItem.user_response = answer;
-
-              // Debug log for visual inspection answer
-              console.log(
-                "📊 Current inspection data:",
-                JSON.stringify(inspectionData, null, 2)
-              );
               // Step 4: Trigger React re-render by updating context
-              // This creates a new object reference so React knows to update
-              setInspectionData({ ...inspectionData });
+              updateInspectionData({ ...inspectionData });
             }
           }
         }}
@@ -189,15 +167,8 @@ export default function InspectionScreen({ navigation }: Props) {
             if (questionItem) {
               // Direct update: Add user_response field to the question
               questionItem.user_response = answer;
-
-              // Debug log for functional test answer
-              console.log(
-                "📊 Current inspection data:",
-                JSON.stringify(inspectionData, null, 2)
-              );
               // Step 4: Trigger React re-render by updating context
-              // This creates a new object reference so React knows to update
-              setInspectionData({ ...inspectionData });
+              updateInspectionData({ ...inspectionData });
             }
           }
         }}
