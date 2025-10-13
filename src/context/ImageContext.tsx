@@ -7,14 +7,41 @@ export type CapturedImage = {
 };
 
 export type InspectionItem = {
-  execution_order: any;
+  execution_order: string | number;
   name: string;
   user_response?: "yes" | "no" | null;
-  [key: string]: any;
+  description?: string;
+  measure?: string;
+  lower_limits?: string | number;
+  upper_limits?: string | number;
 };
 
 export type AnalysisResult = {
-  [key: string]: any; // Generic object for API responses
+  session_id?: string;
+  device?: string;
+  appliance_classification?: {
+    protection_class?: string;
+  };
+  technical_data?: {
+    model_number?: string;
+    voltage?: string;
+    serial_number?: string;
+  };
+  tests?: {
+    visual_inspection?: {
+      items?: InspectionItem[];
+      display_order?: number;
+    };
+    electrical_inspection?: {
+      items?: InspectionItem[];
+      display_order?: number;
+    };
+    functional_inspection?: {
+      items?: InspectionItem[];
+      display_order?: number;
+    };
+  };
+  [key: string]: unknown;
 };
 
 type ImageContextType = {

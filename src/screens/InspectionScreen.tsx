@@ -9,9 +9,10 @@ import {
   VisualInspection,
 } from "../components/inspection";
 import { InspectionItem, useImageContext } from "../context/ImageContext";
+import { RootStackParamList } from "../types/navigation";
 
 type Props = {
-  navigation: StackNavigationProp<any, "Inspection">;
+  navigation: StackNavigationProp<RootStackParamList, "Inspection">;
 };
 
 export default function InspectionScreen({ navigation }: Props) {

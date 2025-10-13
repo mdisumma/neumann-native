@@ -3,7 +3,9 @@ import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import PassIcon from "../../assets/svg/PassIcon";
 
 interface Props {
-  navigation: any;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
 }
 
 export default function SavedScreen({ navigation }: Props) {

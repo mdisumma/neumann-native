@@ -10,8 +10,9 @@ import InspectionScreen from "./src/screens/InspectionScreen";
 import LinkedScreen from "./src/screens/LinkedScreen";
 import ResultScreen from "./src/screens/ResultScreen";
 import SavedScreen from "./src/screens/SavedScreen";
+import { RootStackParamList } from "./src/types/navigation";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (

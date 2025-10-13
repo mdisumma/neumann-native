@@ -3,7 +3,9 @@ import React from "react";
 import { Button, ScrollView, StyleSheet, View } from "react-native";
 
 interface Props {
-  navigation: any;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
 }
 
 export default function ResultScreen({ navigation }: Props) {

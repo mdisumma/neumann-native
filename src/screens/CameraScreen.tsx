@@ -5,9 +5,10 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { useImageContext } from "../context/ImageContext";
+import { RootStackParamList } from "../types/navigation";
 
 type Props = {
-  navigation: StackNavigationProp<any, "Camera">;
+  navigation: StackNavigationProp<RootStackParamList, "Camera">;
 };
 
 export default function CameraScreen({ navigation }: Props) {
