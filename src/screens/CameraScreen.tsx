@@ -2,6 +2,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system/legacy";
 import * as ImagePicker from "expo-image-picker";
+import mime from "mime";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import uuid from "react-native-uuid";
@@ -15,6 +16,11 @@ type Props = {
 export default function CameraScreen({ navigation }: Props) {
   const { setCapturedImage, setAnalysisResult } = useImageContext();
   const [loading, setLoading] = useState(false);
+
+  const getMimeType = (uri: string) => {
+    const mimeType = mime.getType(uri); // automatically detects based on file extension
+    return mimeType || "application/octet-stream"; // fallback if unknown
+  };
 
   const takePhotoAndAnalyze = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
@@ -37,15 +43,16 @@ export default function CameraScreen({ navigation }: Props) {
       uri: photo.uri,
       base64: photo.base64 || undefined,
     });
+    const mimeType = getMimeType(photo.uri);
 
     setLoading(true);
     try {
       const requestBody = {
-        mime_type: "image/jpeg",
+        mime_type: mimeType, // use detected MIME type
         image_data_base64: photo.base64,
         image_id: uuid.v4() as string,
       };
-
+      console.log("📸 mime type:", mimeType);
       console.log(
         "🚀 Sending to API:",
         JSON.stringify(
@@ -95,6 +102,7 @@ export default function CameraScreen({ navigation }: Props) {
         uri: asset.localUri!,
         base64: base64,
       });
+
       const requestBody = {
         mime_type: "image/jpeg",
         image_data_base64: base64,
@@ -105,7 +113,7 @@ export default function CameraScreen({ navigation }: Props) {
         JSON.stringify(
           {
             ...requestBody,
-            image_data_base64: `[BASE64 DATA - ${base64.length} chars]`,
+            image_data_base64: `[BASE64 DATA]`,
           },
           null,
           2
