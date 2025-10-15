@@ -74,10 +74,10 @@ export const ImageProvider = ({ children }: { children: React.ReactNode }) => {
     setAnalysisResult(null);
   };
   const updateAnalysisResult = (updatedData: AnalysisResult) => {
-    console.log(
-      "📊 Current inspection data:",
-      JSON.stringify(updatedData, null, 2)
-    );
+    // console.log(
+    //   "📊 Current inspection data:",
+    //   JSON.stringify(updatedData, null, 2)
+    // );
     setAnalysisResult(updatedData);
   };
 

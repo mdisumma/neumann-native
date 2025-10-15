@@ -1,14 +1,18 @@
 import { StackNavigationProp } from "@react-navigation/stack";
+import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../types/navigation";
 
 import * as ImagePicker from "expo-image-picker";
+import { useImageContext } from "../context/ImageContext";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Label">;
 };
 
 const LabelScreen = ({ navigation }: Props) => {
+  const { analysisResult, updateAnalysisResult } = useImageContext();
+
   const takePhotoLabel = async () => {
     try {
       const { granted } = await ImagePicker.requestCameraPermissionsAsync();
@@ -28,12 +32,20 @@ const LabelScreen = ({ navigation }: Props) => {
         return;
 
       const photo = result.assets[0];
-      console.log("Photo taken:", photo.uri);
+      updateAnalysisResult({ ...analysisResult, photo_label: photo.base64 });
+      navigation.navigate("Linked");
     } catch (err) {
       console.error("Camera error:", err);
       Alert.alert("Error", "Unable to open camera. Please try again.");
     }
   };
+  useEffect(() => {
+    console.log("🚀 test updated:", {
+      ...analysisResult,
+      photo_label: "photo.base64",
+    });
+    // navigate after context has been updated
+  }, [analysisResult]);
 
   return (
     <View>
