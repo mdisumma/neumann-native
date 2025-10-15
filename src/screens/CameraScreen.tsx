@@ -4,6 +4,7 @@ import * as FileSystem from "expo-file-system/legacy";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import uuid from "react-native-uuid";
 import { useImageContext } from "../context/ImageContext";
 import { RootStackParamList } from "../types/navigation";
 
@@ -42,9 +43,7 @@ export default function CameraScreen({ navigation }: Props) {
       const requestBody = {
         mime_type: "image/jpeg",
         image_data_base64: photo.base64,
-
-        // ID IMPLEMENTATION *************************************************
-        // image_id: imageId,
+        image_id: uuid.v4() as string,
       };
 
       console.log(
