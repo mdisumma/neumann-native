@@ -32,7 +32,7 @@ export default function ResultScreen({ navigation }: Props) {
               title="Add label"
               color="#F4F8FC"
               onPress={() => {
-                navigation.navigate("Linked");
+                navigation.navigate("Lablel");
               }}
             />
           </View>

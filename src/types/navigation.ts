@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Camera: undefined;
   Inspection: undefined;
   Result: undefined;
+  Label: undefined;
   Linked: undefined;
   Saved: undefined;
 };

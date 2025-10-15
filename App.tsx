@@ -7,6 +7,7 @@ import { ImageProvider } from "./src/context/ImageContext";
 import CameraScreen from "./src/screens/CameraScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import InspectionScreen from "./src/screens/InspectionScreen";
+import LabelScreen from "./src/screens/LabelScreen";
 import LinkedScreen from "./src/screens/LinkedScreen";
 import ResultScreen from "./src/screens/ResultScreen";
 import SavedScreen from "./src/screens/SavedScreen";
@@ -21,7 +22,7 @@ export default function App() {
         <NavigationContainer>
           <StatusBar style="auto" />
           <Stack.Navigator
-            initialRouteName="Home"
+            initialRouteName="Label"
             screenOptions={{
               headerStyle: { backgroundColor: "#6B7C93" },
               headerTintColor: "#F4F8FC",
@@ -50,6 +51,11 @@ export default function App() {
               name="Result"
               component={ResultScreen}
               options={{ title: "Result" }}
+            />
+            <Stack.Screen
+              name="Label"
+              component={LabelScreen}
+              options={{ title: "Take Photo" }}
             />
             <Stack.Screen
               name="Linked"
