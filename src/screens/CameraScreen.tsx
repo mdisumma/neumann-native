@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import mime from "mime";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
-import uuid from "react-native-uuid";
+// import uuid from "react-native-uuid";
 import { useImageContext } from "../context/ImageContext";
 import { RootStackParamList } from "../types/navigation";
 
@@ -50,7 +50,7 @@ export default function CameraScreen({ navigation }: Props) {
       const requestBody = {
         mime_type: mimeType, // use detected MIME type
         image_data_base64: photo.base64,
-        image_id: uuid.v4() as string,
+        // image_id: uuid.v4() as string,
       };
       console.log("📸 mime type:", mimeType);
       console.log(
